@@ -1,6 +1,8 @@
 # Data analysis
 - Document here the project: school-map-project
-- Description: Project Description
+- Description: 
+Socially optimizing school mapping
+https://docs.google.com/document/d/1ZMbCyd_5yRGwUTH72TnFAWoEiFYsDecQgGJcBjcfFVM/edit
 - Data Source:
 - Type of analysis:
 
