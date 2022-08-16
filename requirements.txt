@@ -8,6 +8,7 @@ wheel>=0.29
 numpy
 pandas
 scikit-learn
+notebook
 
 # tests/linter
 black
@@ -16,11 +17,20 @@ flake8
 pytest
 yapf
 
+#Geodata
+geopandas
+pygeos
+rtree
+import
+fiona
+tobler
+
 # API
 gcsfs
 google-cloud-storage
 mlflow
 s3fs
+requests
 
 # utilities
 six>=1.14
