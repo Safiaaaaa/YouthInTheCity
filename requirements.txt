@@ -20,10 +20,9 @@ pytest
 yapf
 
 #Geodata
-geopandas
+geopanda
 pygeos
 rtree
-import
 fiona
 tobler
 
