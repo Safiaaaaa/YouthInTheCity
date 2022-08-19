@@ -9,6 +9,8 @@ numpy
 pandas
 scikit-learn
 notebook
+matplotlib
+seaborn
 
 # tests/linter
 black
@@ -18,10 +20,9 @@ pytest
 yapf
 
 #Geodata
-geopandas
+geopanda
 pygeos
 rtree
-import
 fiona
 tobler
 
