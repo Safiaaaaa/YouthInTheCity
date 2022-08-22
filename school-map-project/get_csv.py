@@ -94,7 +94,7 @@ def get_outdoor_leisure(location):
     new_querie = query_params_osm(location = location, keys = outdoor_leisure)
     df_outdoor_leisure = pd.DataFrame(new_querie['elements'])[['lat', 'lon']]
     df_outdoor_leisure['coor'] = list(zip(df_outdoor_leisure.lat, df_outdoor_leisure.lon))
-    df_outdoor_leisure.to_csv('data/api_features/out_leisure,.csv', index=False)
+    df_outdoor_leisure.to_csv('data/api_features/out_leisure.csv', index=False)
     return df_outdoor_leisure
 
 def get_water(location):
