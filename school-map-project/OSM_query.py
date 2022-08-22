@@ -1,6 +1,7 @@
 from http.client import SWITCHING_PROTOCOLS
 import requests
-from query_names import water
+from query_names import public_transport
+
 
 """ Functions to send request to OSM's API """
 
@@ -46,4 +47,4 @@ if __name__ == "__main__":
 # print(param_nodes(keys = {'amenity': ['atm', 'bank', 'bureau_de_change']}))
 
     print(query_params_osm(location = "Berlin",
-                    keys = water))
+                    keys = public_transport))

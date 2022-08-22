@@ -44,3 +44,4 @@ outdoor_leisure = {'leisure':['swimming_pool', 'park','playground','garden','swi
 
 water = {'natural':['water','beach', 'lake', 'river', 'shore'],
          'amenity':['fountain']}
+query_keys = [public_transport, eating, night_life, culture, community, health_care, public_service, education, schools, universities, kindergarten, outdoor_facilities, outdoor_leisure, water]
