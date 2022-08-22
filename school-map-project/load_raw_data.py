@@ -2,6 +2,8 @@ import os
 import pandas as pd
 import geopandas as gpd
 
+""" Load maps and datasets from Berlin's Open Data Platform"""
+
 def load_social_data():
     """
     Returns dataframes following dataframes on Planungraeume level: social index variables (child poverty, enemployment
