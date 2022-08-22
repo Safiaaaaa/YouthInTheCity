@@ -1,6 +1,8 @@
 from http.client import SWITCHING_PROTOCOLS
+from textwrap import indent
 import requests
-from query_names import public_transport
+from query_names import public_transport, outdoor_leisure
+import json
 
 
 """ Functions to send request to OSM's API """
@@ -28,6 +30,7 @@ def query_params_osm(location, keys, limit=''):
     location_area = f'area[name="{location}"]->.city'
 
     params = param_nodes(dict(keys))
+
     out_type = 'center'
 
     overpass_query = f"""
@@ -46,5 +49,7 @@ def query_params_osm(location, keys, limit=''):
 if __name__ == "__main__":
 # print(param_nodes(keys = {'amenity': ['atm', 'bank', 'bureau_de_change']}))
 
-    print(query_params_osm(location = "Berlin",
-                    keys = public_transport))
+    #print(query_params_osm(location = "Berlin",
+                    #keys = public_transport))
+    #print(dict(public_transport))
+    print(query_params_osm('Berlin', outdoor_leisure, limit=''))
