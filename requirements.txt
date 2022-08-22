@@ -25,6 +25,7 @@ pygeos
 rtree
 fiona
 tobler
+pysal
 
 # API
 gcsfs
