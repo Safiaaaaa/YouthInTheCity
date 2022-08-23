@@ -15,6 +15,9 @@ def param_nodes(keys):
             osm_keys += f"""node['{k}'='{v}'](area.city);"""
     return osm_keys
 
+culture = {'amenity':['theatre','public_bookcase', 'events_venue',
+        'cinema','arts_centre', 'museum', 'cultural_center', 'gallery',
+        'events_venue', 'planetarium']}
 
 def query_params_osm(location, keys, limit=''):
     '''Adding keys and values as a dictionary, example: keys_values_osm = {'amenity':['bbq','cafe']}
@@ -23,7 +26,7 @@ def query_params_osm(location, keys, limit=''):
     limit = number (optional query limit)'''
     location_area = f'area[name="{location}"]->.city'
 
-    params = param_nodes(dict(keys))
+    params = param_nodes(keys)
 
     out_type = 'center'
 
@@ -38,7 +41,13 @@ def query_params_osm(location, keys, limit=''):
 
     response = requests.get(overpass_url,
                             params={'data': overpass_query})
-    return response.json()
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return None
+
+
+
 
 if __name__ == "__main__":
 

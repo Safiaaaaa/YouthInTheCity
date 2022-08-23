@@ -22,6 +22,7 @@ filtered_blocks = get_maps_csv()['filtered_blocks']
 housing_data = get_maps_csv()['housing_data']
 environment =  get_maps_csv()['environment']
 building_age = get_maps_csv()['building_age']
+
 def create_demo_mig_gdf():
     """returns a gdf with migration and demographic data on planungraum level 2021"""
 
@@ -43,7 +44,7 @@ def create_demo_mig_gdf():
        'MH_E85_90', 'MH_E90_95', 'MH_E95_110'])
 )
     # merge df with planungsräume 2020 geodatagrame (449 rows)
-    demo_gdf = pr_2020[['RAUMID', 'BEZNAME','PLRNAME', 'geometry']].merge(
+    demo_gdf = pr_2020[['RAUMID','geometry']].merge(
          merged_data, on='RAUMID')
 
     # interpolate merged gdf into planungsräume 2021 (542 rows)
@@ -54,11 +55,7 @@ def create_demo_mig_gdf():
             'E_E15U18', 'E_E18U25', 'E_E25U55', 'E_E55U65', 'E_E65U80', 'E_E80U110',
             'MH_E', 'MH_EM', 'MH_EW', 'MH_U1', 'MH_1U6', 'MH_6U15', 'MH_15U18',
             'MH_18U25', 'MH_25U55', 'MH_55U65', 'MH_65U80', 'MH_80U110'])
-
-    # merge with planungsräume 2021 to add the planungsraum identifier
-    merged_data_2021 = pr_2021[['PLR_ID', 'geometry']].merge(interpolate, on='geometry')
-
-    return merged_data_2021
+    return interpolate
 
 def create_housing_gdf():
     """ Returns a geodatagrame on planungsräume 2021 with housing data"""
@@ -97,8 +94,8 @@ def create_social_gdf():
     social_index.columns = social_index.columns = ['EW', 'unemployment', 'welfare',
                                          'child_pov', 'dyn_unempl',
                                          'dyn_welfare', 'dyn_child', 'PLR_ID']
-    return social_index
-
+    merged = pr_2021[['PLR_ID', 'geometry']].merge(social_index, on='PLR_ID')
+    return merged
 
 def create_umwelt_gdf():
     """ Returns a geodataframe with environmental features on planungsräume 2021 """
@@ -155,6 +152,7 @@ def create_umwelt_gdf():
 def create_building_age_gdp():
     """ Returns a dataframe with building age"""
     # transforming and imputing values
+    building_age.replace(np.nan, 0, inplace=True)
     building_age.x2011_2015 = building_age.x2011_2015.replace([np.nan, '1 - 3'],
                                                               [0,2]).astype(float)
     # creating buffer size 0 to avoid error 'self intersection'
@@ -166,8 +164,15 @@ def create_building_age_gdp():
                             extensive_variables=['x_bis_1900', 'x1901_1910', 'x1911_1920', 'x1921_1930',
        'x1931_1940', 'x1941_1950', 'x1951_1960', 'x1961_1970', 'x1971_1980',
        'x1981_1990', 'x1991_2000', 'x2001_2010', 'x2011_2015', 'ew2015'])
-    merged = interpol.merge(pr_2021, on='geometry')
+    return interpol
+
+def get_bodp_data():
+    merged = create_demo_mig_gdf().merge(
+        create_housing_gdf(), on='geometry').merge(
+            create_social_gdf(), on='geometry').merge(
+                create_umwelt_gdf(), on='geometry').merge(
+                    create_building_age_gdp(), on='geometry')
     return merged
 
 if __name__ == '__main__':
-    print(create_building_age_gdp())
+    print(get_bodp_data())

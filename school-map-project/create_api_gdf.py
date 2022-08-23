@@ -4,6 +4,7 @@ import geopandas as gpd
 from OSM_query import query_params_osm
 from query_names import query_keys
 import os
+import time
 import pygeos
 import rtree
 
@@ -13,7 +14,7 @@ adding 500m buffers aroung the points"""
 
 root_dir = os.path.dirname(os.path.dirname(__file__))
 dir_path = os.path.join(root_dir,"raw_data", "maps")
-target_gdf = gpd.read_file(os.path.join(dir_path, 'pr_2021.shp'))
+target_gdf = gpd.read_file(os.path.join(dir_path, 'pr_2021.shp'))[['PLR_ID', 'geometry']]
 join_feature = 'PLR_ID'
 location = 'Berlin'
 feature_names = ['public_transport', 'eating', 'night_life', 'culture', 'community',
@@ -46,24 +47,21 @@ def spatial_intersect(df, target, join_feature, feature_name):
 
     return merged
 
-def query_to_gdf(query_keys, feature_names, target_gdf, location, join_feature, limit=''):
+def query_to_gdf():
     """sends API query to get all features and returns a geodataframe with the
     amount of feature per Planungsraum"""
 
     merged_df = target_gdf
 
     for key, name in zip(query_keys, feature_names):
-        new_querie  = query_params_osm(location=location, keys=key, limit=limit)
-        df = pd.DataFrame(new_querie['elements'])[['lat', 'lon']]
-        geo_df = open_filter(df)
-        merged_df = spatial_intersect(geo_df, target_gdf, join_feature, name)
-
+        time.sleep(20)
+        new_querie  = query_params_osm(location=location, keys=key)
+        if new_querie != None:
+            df = pd.DataFrame(new_querie['elements'])[['lat', 'lon']]
+            geo_df = open_filter(df)
+            merged_df = spatial_intersect(geo_df, merged_df, join_feature, name)
     return merged_df
 
 if __name__ == '__main__':
 
-    print(query_to_gdf(query_keys=query_keys,
-                 feature_names=feature_names,
-                 target_gdf=target_gdf,
-                 location=location,
-                 join_feature=join_feature))
+    print(query_to_gdf())
