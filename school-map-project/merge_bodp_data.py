@@ -6,7 +6,6 @@ import pygeos
 import rtree
 from fiona import BytesCollection
 from tobler.area_weighted import area_interpolate
-from tobler.dasymetric import masked_area_interpolate
 from load_raw_data import get_maps_csv
 
 """Functions to merge data from Berlin's open data platform"""
@@ -18,9 +17,11 @@ social_index = get_maps_csv()['social_index']
 pr_2020 = get_maps_csv()['pr_2020']
 pr_2020['RAUMID'] = pd.to_numeric(pr_2020['Plr_Nummer'])
 pr_2021 = get_maps_csv()['pr_2021']
+pr_2021['PLR_ID'] = pd.to_numeric(pr_2021['PLR_ID'])
 filtered_blocks = get_maps_csv()['filtered_blocks']
 housing_data = get_maps_csv()['housing_data']
-
+environment =  get_maps_csv()['environment']
+building_age = get_maps_csv()['building_age']
 def create_demo_mig_gdf():
     """returns a gdf with migration and demographic data on planungraum level 2021"""
 
@@ -55,7 +56,7 @@ def create_demo_mig_gdf():
             'MH_18U25', 'MH_25U55', 'MH_55U65', 'MH_65U80', 'MH_80U110'])
 
     # merge with planungsräume 2021 to add the planungsraum identifier
-    merged_data_2021 = pr_2021[['PLR_ID', 'PLR_NAME', 'geometry']].merge(interpolate, on='geometry')
+    merged_data_2021 = pr_2021[['PLR_ID', 'geometry']].merge(interpolate, on='geometry')
 
     return merged_data_2021
 
@@ -76,8 +77,11 @@ def create_housing_gdf():
     intensive_variables=['angebotsmi', 'aenderung_', 'anteil_lei',
        'anteil_soz', 'anteil_sta', 'entwicklun', 'wohndauer', 'wohnungsum',
        'wohnungs_1', 'wohnungsve', 'wohnungs_2'])
-    merged_data_2021 = pr_2021[['PLR_ID', 'PLR_NAME', 'geometry']].merge(interpolate, on='geometry')
-
+    interpolate.columns =  ['ave_rent', 'dyn_wel_po', 'welf_po', 'social_housing',
+                            'public_housing', 'dyn_ew', 'five_y_pls', 'rent_to_pr',
+                            'dyn_r_to_pr', 'sales', 'dyn_sales', 'geometry'
+                              ]
+    merged_data_2021 = pr_2021[['PLR_ID', 'geometry']].merge(interpolate, on='geometry')
     return merged_data_2021
 
 def create_social_gdf():
@@ -88,9 +92,82 @@ def create_social_gdf():
        'Kinderarmut_dyn']
     for c in columns:
         social_index[f'{c}'] = pd.to_numeric(social_index[f'{c}'])
+    social_index['PLR_ID'] = pd.to_numeric(social_index.Nummer)
+    social_index.drop(columns=['Nummer', 'Name'], inplace=True)
+    social_index.columns = social_index.columns = ['EW', 'unemployment', 'welfare',
+                                         'child_pov', 'dyn_unempl',
+                                         'dyn_welfare', 'dyn_child', 'PLR_ID']
     return social_index
 
 
+def create_umwelt_gdf():
+    """ Returns a geodataframe with environmental features on planungsräume 2021 """
+
+    environment.drop(columns=['plr_name', 'status', 'anz_bel', 'wohnlage'],
+                     inplace= True)
+
+    # area interpolation from blocks to planungsräume 2021
+    interpolate =  area_interpolate(environment, pr_2021,
+                    categorical_variables=['laerm', 'luft', 'gruen', 'bio'])
+    columns = ['laerm_mittel', 'laerm_None', 'laerm_hoch', 'laerm_sehr hoch',
+       'laerm_niedrig - sehr niedrig', 'luft_hoch', 'luft_mittel',
+       'luft_gering', 'gruen_schlecht, sehr schlecht', 'gruen_gut, sehr gut',
+       'gruen_mittel', 'gruen_None', 'bio_hoch', 'bio_mittel', 'bio_gering']
+
+    # rounding probabilities of belonging to each cat --> results in one hot encoding
+    for c in columns:
+        interpolate[f'{c}']= round(interpolate[f'{c}'])
+
+    # reverse OHE
+    interpolate['noise'] = interpolate[['laerm_mittel', 'laerm_None',
+                                        'laerm_hoch', 'laerm_sehr hoch',
+                                        'laerm_niedrig - sehr niedrig']].idxmax(1)
+    interpolate['air'] = interpolate[['luft_hoch', 'luft_mittel',
+                                    'luft_gering']].idxmax(1)
+
+    interpolate['green'] = interpolate[['gruen_schlecht, sehr schlecht', 'gruen_gut, sehr gut',
+                                        'gruen_mittel', 'gruen_None']].idxmax(1)
+
+    interpolate['bio'] = interpolate[['bio_hoch', 'bio_mittel', 'bio_gering']].idxmax(1)
+
+    # dropping unnecessary columns
+    interpolate.drop(columns=['laerm_mittel', 'laerm_None','laerm_hoch',
+                            'laerm_sehr hoch','laerm_niedrig - sehr niedrig',
+                            'luft_hoch','luft_mittel','luft_gering',
+                            'gruen_schlecht, sehr schlecht', 'gruen_gut, sehr gut',
+                            'gruen_mittel', 'gruen_None', 'bio_hoch', 'bio_mittel',
+                            'bio_gering'], inplace=True)
+
+    # noise load --> 0 is good, 3 is bad
+    interpolate['noise'] = interpolate['noise'].map({'laerm_mittel':1, 'laerm_niedrig - sehr niedrig':0, 'laerm_hoch': 2, 'laerm_sehr hoch': 3})
+
+    # bioclimatic load --> 0 is good, 2 is bad
+    interpolate['bio'] = interpolate['bio'].map({'bio_mittel':1, 'bio_gering':0, 'bio_hoch': 2})
+
+    # air pollution load --> 0 is good, 2 is bad
+    interpolate['air'] = interpolate['air'].map({'luft_mittel':1, 'luft_gering':0, 'luft_hoch': 2})
+
+    # green supply --> 0 is good, 2 is bad
+    interpolate['green'] = interpolate['green'].map({'gruen_schlecht, sehr schlecht': 2, 'gruen_mittel': 1, 'gruen_gut, sehr gut': 0})
+
+    return interpolate
+
+def create_building_age_gdp():
+    """ Returns a dataframe with building age"""
+    # transforming and imputing values
+    building_age.x2011_2015 = building_age.x2011_2015.replace([np.nan, '1 - 3'],
+                                                              [0,2]).astype(float)
+    # creating buffer size 0 to avoid error 'self intersection'
+    building_age['buffer'] = building_age.buffer(0)
+    building_age.set_geometry('buffer', inplace=True)
+    # interpolate from blocks to planungsräume 2021
+    interpol = area_interpolate(building_age,
+                            pr_2021,
+                            extensive_variables=['x_bis_1900', 'x1901_1910', 'x1911_1920', 'x1921_1930',
+       'x1931_1940', 'x1941_1950', 'x1951_1960', 'x1961_1970', 'x1971_1980',
+       'x1981_1990', 'x1991_2000', 'x2001_2010', 'x2011_2015', 'ew2015'])
+    merged = interpol.merge(pr_2021, on='geometry')
+    return merged
 
 if __name__ == '__main__':
-    print(create_social_gdf())
+    print(create_building_age_gdp())
