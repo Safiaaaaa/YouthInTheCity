@@ -1,17 +1,11 @@
 from http.client import SWITCHING_PROTOCOLS
 from textwrap import indent
 import requests
-from query_names import public_transport, outdoor_leisure
-import json
-
+from query_names import outdoor_leisure
 
 """ Functions to send request to OSM's API """
 
 overpass_url = "http://overpass-api.de/api/interpreter"
-
-
-columns = ['query_string','name','distance','geomtype','jsontype','shapelytype','category']
-columns_wb = ['query_string', 'name','distance','geomtype','jsontype','shapelytype','category','whitefilter','blackfilter']
 
 def param_nodes(keys):
     '''converts the dict into a string, returns a str'''
@@ -47,9 +41,5 @@ def query_params_osm(location, keys, limit=''):
     return response.json()
 
 if __name__ == "__main__":
-# print(param_nodes(keys = {'amenity': ['atm', 'bank', 'bureau_de_change']}))
 
-    #print(query_params_osm(location = "Berlin",
-                    #keys = public_transport))
-    #print(dict(public_transport))
     print(query_params_osm('Berlin', outdoor_leisure, limit=''))
