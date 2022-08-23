@@ -12,7 +12,5 @@ def get_final_gdf():
     merged.to_file('data/final_gdf.shp')
     return merged
 
-
-
 if __name__ == "__main__":
-    print
+    print(get_final_gdf())
