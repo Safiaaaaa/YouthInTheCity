@@ -1,128 +1,52 @@
 import pandas as pd
-from query_names import public_transport, eating, night_life, culture, community, health_care, public_service, education, schools, universities, kindergarten, outdoor_facilities, outdoor_leisure, water
+import query_names
+from query_names import query_keys, feature_names, query_keys, feature_names, target_gdf, join_feature, location
 from OSM_query import query_params_osm
+from create_api_gdf import open_filter, spatial_intersect
+import numpy as np
+import os
+import time
 
 """Loading API responses as CSVs"""
 
-def get_public_transp(location):
-    #for querie in public_transport:
-    new_querie = query_params_osm(location = location, keys = public_transport)
-    df_public_transport = pd.DataFrame(new_querie['elements'])[['lat', 'lon']]
-    df_public_transport['coor'] = list(zip(df_public_transport.lat, df_public_transport.lon))
-    df_public_transport.to_csv('data/api_features/transport.csv', index=False)
-    return df_public_transport
-
-def get_eating(location):
-    new_querie = query_params_osm(location = location, keys = eating)
-    df_eating = pd.DataFrame(new_querie['elements'])[['lat', 'lon']]
-    df_eating['coor'] = list(zip(df_eating.lat, df_eating.lon))
-    df_eating.to_csv('data/api_features/eating.csv', index=False)
-    return df_eating
-
-def get_night_life(location):
-    new_querie = query_params_osm(location = location, keys = night_life)
-    df_night_life = pd.DataFrame(new_querie['elements'])[['lat', 'lon']]
-    df_night_life['coor'] = list(zip(df_night_life.lat, df_night_life.lon))
-    df_night_life.to_csv('data/api_features/night.csv', index=False)
-    return df_night_life
-
-def get_culture(location):
-    new_querie = query_params_osm(location = location, keys = culture)
-    df_culture = pd.DataFrame(new_querie['elements'])[['lat', 'lon']]
-    df_culture['coor'] = list(zip(df_culture.lat, df_culture.lon))
-    df_culture.to_csv('data/api_features/culture.csv', index=False)
-    return df_culture
-
-def get_community(location):
-    new_querie = query_params_osm(location = location, keys = community)
-    df_community = pd.DataFrame(new_querie['elements'])[['lat', 'lon']]
-    df_community['coor'] = list(zip(df_community.lat, df_community.lon))
-    df_community.to_csv('data/api_features/community.csv', index=False)
-    return df_community
-
-def get_health_care(location):
-    new_querie = query_params_osm(location = location, keys = health_care)
-    df_health_care = pd.DataFrame(new_querie['elements'])[['lat', 'lon']]
-    df_health_care['coor'] = list(zip(df_health_care.lat, df_health_care.lon))
-    df_health_care.to_csv('data/api_features/health_care.csv', index=False)
-    return df_health_care
-
-def get_public_service(location):
-    new_querie = query_params_osm(location = location, keys = public_service)
-    df_public_service = pd.DataFrame(new_querie['elements'])[['lat', 'lon']]
-    df_public_service['coor'] = list(zip(df_public_service.lat, df_public_service.lon))
-    df_public_service.to_csv('data/api_features/pub_serv.csv', index=False)
-    return df_public_service
-
-def get_education(location):
-    new_querie = query_params_osm(location = location, keys = education)
-    df_education = pd.DataFrame(new_querie['elements'])[['lat', 'lon']]
-    df_education['coor'] = list(zip(df_education.lat, df_education.lon))
-    df_education.to_csv('data/api_features/education.csv', index=False)
-    return df_education
-
-def get_schools(location):
-    new_querie = query_params_osm(location = location, keys = schools)
-    df_schools = pd.DataFrame(new_querie['elements'])[['lat', 'lon']]
-    df_schools['coor'] = list(zip(df_schools.lat, df_schools.lon))
-    df_schools.to_csv('data/api_features/schools.csv', index=False)
-    return df_schools
-
-def get_universities(location):
-    new_querie = query_params_osm(location = location, keys = universities)
-    df_universities = pd.DataFrame(new_querie['elements'])[['lat', 'lon']]
-    df_universities['coor'] = list(zip(df_universities.lat, df_universities.lon))
-    df_universities.to_csv('data/api_features/schools.csv', index=False)
-    return df_universities
-
-def get_kindergarten(location):
-    new_querie = query_params_osm(location = location, keys = kindergarten)
-    df_kindergarten = pd.DataFrame(new_querie['elements'])[['lat', 'lon']]
-    df_kindergarten['coor'] = list(zip(df_kindergarten.lat, df_kindergarten.lon))
-    df_kindergarten.to_csv('data/api_features/kindergarten.csv', index=False)
-    return df_kindergarten
-
-def get_outdoor_facilities(location):
-    #for querie in outdoor_facilities:
-    new_querie = query_params_osm(location = location, keys = outdoor_facilities)
-    df_outdoor_facilities = pd.DataFrame(new_querie['elements'])[['lat', 'lon']]
-    df_outdoor_facilities['coor'] = list(zip(df_outdoor_facilities.lat, df_outdoor_facilities.lon))
-    df_outdoor_facilities.to_csv('data/api_features/out_facilities.csv', index=False)
-    return df_outdoor_facilities
-
-def get_outdoor_leisure(location):
-    new_querie = query_params_osm(location = location, keys = outdoor_leisure)
-    df_outdoor_leisure = pd.DataFrame(new_querie['elements'])[['lat', 'lon']]
-    df_outdoor_leisure['coor'] = list(zip(df_outdoor_leisure.lat, df_outdoor_leisure.lon))
-    df_outdoor_leisure.to_csv('data/api_features/out_leisure.csv', index=False)
-    return df_outdoor_leisure
-
-def get_water(location):
-    new_querie = query_params_osm(location = location, keys = water)
-    df_water = pd.DataFrame(new_querie['elements'])[['lat', 'lon']]
-    df_water['coor'] = list(zip(df_water.lat, df_water.lon))
-    df_water.to_csv('data/api_features/water.csv', index=False)
-    return df_water
+root_dir = os.path.dirname(os.path.dirname(__file__))
+dir_path = os.path.join(root_dir,"school-map-project", "data")
 
 
-def get_all(location):
+def query_to_csv():
+    """sends API query to get all features and returns a geodataframe with the
+    amount of feature per Planungsraum"""
 
-    # return get_public_transp(location = location)
-    get_public_transp(location = location)
-    get_eating(location = location)
-    get_night_life(location = location)
-    get_culture(location = location)
-    get_community(location = location)
-    get_health_care(location = location)
-    get_public_service(location = location)
-    get_education(location = location)
-    get_schools(location = location)
-    get_universities(location = location)
-    get_kindergarten(location = location)
-    get_outdoor_facilities(location=location)
-    get_outdoor_leisure(location=location)
-    get_water(location = location)
+    query_k_failed = []
+    query_n_failed = []
 
+    for key, name in zip(query_keys, feature_names):
+        time.sleep(10)
+        merged_df = target_gdf
+        new_querie  = query_params_osm(location=location, keys=key, limit='')
+        if new_querie != None:
+            df = pd.DataFrame(new_querie['elements'])[['lat', 'lon']]
+            geo_df = open_filter(df)
+            merged_df = spatial_intersect(geo_df, merged_df, join_feature, name)
+            merged_df.replace(np.nan, 0, inplace=True)
+            merged_df.to_csv(os.path.join(dir_path, f'{name}.csv'))
+        else:
+            print(f' ------ {name} FAILED ------')
+            query_k_failed.append(key)
+            query_n_failed.append(name)
+
+    time.sleep(30)
+    for key, name in dict(zip(query_k_failed, query_n_failed)):
+        merged_df = target_gdf
+        new_querie  = query_params_osm(location=location, keys=key, limit='')
+        if new_querie != None:
+            df = pd.DataFrame(new_querie['elements'])[['lat', 'lon']]
+            geo_df = open_filter(df)
+            merged_df = spatial_intersect(geo_df, merged_df, join_feature, name)
+            merged_df.replace(np.nan, 0, inplace=True)
+            merged_df.to_csv(os.path.join(dir_path, f'{name}.csv'))
+        else:
+            print(f' ------ {name} FAILED 2nd time ------')
 
 if __name__ == "__main__":
-    print(get_community('Berlin'))
+    print(query_to_csv())

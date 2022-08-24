@@ -41,6 +41,8 @@ count_lines:
         '{printf "%4s %s\n", $$1, $$2}{s+=$$0}END{print s}'
 	@echo ''
 
+get_data:
+	@python school-map-project/get_data.py
 # ----------------------------------
 #      UPLOAD PACKAGE TO PYPI
 # ----------------------------------

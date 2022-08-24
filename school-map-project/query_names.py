@@ -1,6 +1,7 @@
 
 """ OSM query keys (per feature) """
 
+from load_raw_data import get_maps_csv
 
 public_transport = {'amenity':['bus_station'],
                    'highway':['bus_stop','platform'],
@@ -45,3 +46,17 @@ outdoor_leisure = {'leisure':['swimming_pool', 'park','playground','garden','swi
 water = {'natural':['water','beach', 'lake', 'river', 'shore'],
          'amenity':['fountain']}
 query_keys = [public_transport, eating, night_life, culture, community, health_care, public_service, education, schools, universities, kindergarten, outdoor_facilities, outdoor_leisure, water]
+
+feature_names = ['public_transport', 'eating', 'night_life', 'culture', 'community',
+                    'health_care', 'public_service', 'education', 'schools',
+                    'universities', 'kindergarten', 'outdoor_facilities',
+                    'outdoor_leisure', 'water']
+
+
+pr_2021 = get_maps_csv()['pr_2021'][['PLR_ID', 'geometry']]
+pr_2021['PLR_ID'] = pr_2021['PLR_ID'].astype(int)
+target_gdf = pr_2021
+
+join_feature = 'PLR_ID'
+
+location = 'Berlin'
