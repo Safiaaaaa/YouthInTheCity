@@ -2,22 +2,23 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import geopandas as gpd
-import pygeos
-import rtree
 from fiona import BytesCollection
 from tobler.area_weighted import area_interpolate
 from load_raw_data import get_maps_csv
+import os
 
 """Functions to merge data from Berlin's open data platform"""
 
+root_dir = os.path.dirname(os.path.dirname(__file__))
+dir_path = os.path.join(root_dir,"school-map-project", "data")
 
 mig_data = get_maps_csv()['migration_data']
 gen_data = get_maps_csv()['demo_data']
 social_index = get_maps_csv()['social_index']
 pr_2020 = get_maps_csv()['pr_2020']
 pr_2020['RAUMID'] = pd.to_numeric(pr_2020['Plr_Nummer'])
-pr_2021 = get_maps_csv()['pr_2021']
-pr_2021['PLR_ID'] = pd.to_numeric(pr_2021['PLR_ID'])
+pr_2021 = get_maps_csv()['pr_2021'][['PLR_ID', 'geometry']]
+pr_2021['PLR_ID'] = pr_2021['PLR_ID'].astype(int)
 filtered_blocks = get_maps_csv()['filtered_blocks']
 housing_data = get_maps_csv()['housing_data']
 environment =  get_maps_csv()['environment']
@@ -78,8 +79,8 @@ def create_housing_gdf():
                             'public_housing', 'dyn_ew', 'five_y_pls', 'rent_to_pr',
                             'dyn_r_to_pr', 'sales', 'dyn_sales', 'geometry'
                               ]
-    merged_data_2021 = pr_2021[['PLR_ID', 'geometry']].merge(interpolate, on='geometry')
-    return merged_data_2021
+    #merged_data_2021 = pr_2021[['geometry']].merge(interpolate, on='geometry')
+    return interpolate
 
 def create_social_gdf():
     """ Returns a geodataframe with the social index (unemployment rate, social
@@ -91,9 +92,9 @@ def create_social_gdf():
         social_index[f'{c}'] = pd.to_numeric(social_index[f'{c}'])
     social_index['PLR_ID'] = pd.to_numeric(social_index.Nummer)
     social_index.drop(columns=['Nummer', 'Name'], inplace=True)
-    social_index.columns = social_index.columns = ['EW', 'unemployment', 'welfare',
-                                         'child_pov', 'dyn_unempl',
-                                         'dyn_welfare', 'dyn_child', 'PLR_ID']
+    social_index.columns = ['EW', 'unemployment', 'welfare',
+                            'child_pov', 'dyn_unempl',
+                            'dyn_welfare', 'dyn_child', 'PLR_ID']
     merged = pr_2021[['PLR_ID', 'geometry']].merge(social_index, on='PLR_ID')
     return merged
 
@@ -172,7 +173,8 @@ def get_bodp_data():
             create_social_gdf(), on='geometry').merge(
                 create_umwelt_gdf(), on='geometry').merge(
                     create_building_age_gdp(), on='geometry')
+    merged.to_file(os.path.join(dir_path, 'bodp_features.shp'))
     return merged
 
 if __name__ == '__main__':
-    print(get_bodp_data())
+    print(create_social_gdf())

@@ -44,7 +44,7 @@ def query_params_osm(location, keys, limit=''):
     if response.status_code == 200:
         return response.json()
     else:
-        return None
+        print(response.status_code)
 
 
 
