@@ -20,7 +20,7 @@ pytest
 yapf
 
 #Geodata
-geopanda
+geopandas
 pygeos
 rtree
 fiona
