@@ -1,4 +1,4 @@
-modules = __import__('school-map-project')
+#These code below are from the "data_prep_pipe.py"
 import pandas as pd
 import numpy as np
 import geopandas as gpd
@@ -9,11 +9,13 @@ from termcolor import colored
 import mlflow
 from memoized_property import memoized_property
 from mlflow.tracking import MlflowClient
+from sklearn.compose import ColumnTransformer
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import RobustScaler
 from sklearn.impute import KNNImputer
+from sklearn.metrics import r2_score
 
 EXPERIMENT_NAME = "Batch_874_Youth_in_the_city_spatial_regression"
 yourname = "Batch_874_Safiaaaaa"
@@ -52,11 +54,11 @@ class Trainer(object):
         self.pipeline.fit(self.X, self.y)
 
     def evaluate(self, X_test, y_test):
-        """evaluates the pipeline on df_test and return the RMSE"""
+        """evaluates the pipeline on df_test and return the r2 score"""
         y_pred = self.pipeline.predict(X_test)
-        r2_score = r2_score(y_test, y_pred)
-        self.mlflow_log_metric("r2-score", r2_score)
-        return round(r2_score, 2)
+        score = r2_score(y_test, y_pred)
+        self.mlflow_log_metric("r2-score", score)
+        return round(score, 2)
 
     def save_model_locally(self):
         """Save the model into a .joblib format"""
@@ -91,15 +93,13 @@ class Trainer(object):
 if __name__ == "__main__":
     # Get and clean data
     df = pd.read_csv("../raw_data/final_data/final_data.csv")
-    df.drop(columns = ["Name"], inplace = True)
     y = df["Kinderarmu"]
     X = df.drop(columns=["Kinderarmu", "geometry"])
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
     # Train and save model, locally and
     trainer = Trainer(X=X_train, y=y_train)
-    trainer.set_pipeline()
     trainer.set_experiment_name('xp2')
     trainer.run()
-    r2_score = trainer.evaluate(X_test, y_test)
-    print(f"r2_score: {r2_score}")
+    score = trainer.evaluate(X_test, y_test)
+    print(f"r2_score: {score}")
     trainer.save_model_locally()
