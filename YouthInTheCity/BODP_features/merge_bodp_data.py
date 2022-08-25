@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 import geopandas as gpd
 from fiona import BytesCollection
 from tobler.area_weighted import area_interpolate

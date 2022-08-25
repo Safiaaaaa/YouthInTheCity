@@ -1,8 +1,8 @@
-from create_api_gdf import query_to_gdf
-from merge_bodp_data import  get_bodp_data
+from OSM_features.create_api_gdf import query_to_gdf
+from BODP_features.merge_bodp_data import  get_bodp_data
 import geopandas as gpd
-from query_names import query_keys
-from create_api_gdf import feature_names, target_gdf, location, join_feature
+from OSM_features.query_names import query_keys
+from OSM_features.create_api_gdf import feature_names, target_gdf, location, join_feature
 import os
 
 """Merging all data into one GeoDataFrame"""

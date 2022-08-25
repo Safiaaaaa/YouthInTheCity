@@ -1,7 +1,7 @@
 
 """ OSM query keys (per feature) """
 
-from load_raw_data import get_maps_csv
+from BODP_features.load_raw_data import get_maps_csv
 
 public_transport = {'amenity':['bus_station'],
                    'highway':['bus_stop','platform'],
