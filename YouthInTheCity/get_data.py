@@ -8,7 +8,7 @@ import os
 """Merging all data into one GeoDataFrame"""
 
 root_dir = os.path.dirname(os.path.dirname(__file__))
-dir_path = os.path.join(root_dir,"school-map-project", "data")
+dir_path = os.path.join(root_dir,"YouthInTheCity", "data")
 
 def get_final_gdf():
     api_features = query_to_gdf(query_keys=query_keys,
@@ -18,8 +18,8 @@ def get_final_gdf():
                  join_feature=join_feature,
                  limit='')
     bodp_features = get_bodp_data()
-    #api_features = gpd.read_file('/Users/Safia/code/Safiaaaaa/school-map-project/school-map-project/data/api_features.shp')
-    #bodp_features = gpd.read_file('/Users/Safia/code/Safiaaaaa/school-map-project/school-map-project/data/bodp_features.shp')
+    #api_features = gpd.read_file('/Users/Safia/code/Safiaaaaa/YouthInTheCity/YouthInTheCity/data/api_features.shp')
+    #bodp_features = gpd.read_file('/Users/Safia/code/Safiaaaaa/YouthInTheCity/YouthInTheCity/data/bodp_features.shp')
     merged = api_features.merge(bodp_features.drop(columns='geometry'), on='PLR_ID')
     merged.to_file(os.path.join(dir_path, 'final_gdf.shp'))
     return merged

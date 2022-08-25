@@ -10,7 +10,7 @@ import os
 """Functions to merge data from Berlin's open data platform"""
 
 root_dir = os.path.dirname(os.path.dirname(__file__))
-dir_path = os.path.join(root_dir,"school-map-project", "data")
+dir_path = os.path.join(root_dir,"YouthInTheCity", "data")
 
 mig_data = get_maps_csv()['migration_data']
 gen_data = get_maps_csv()['demo_data']

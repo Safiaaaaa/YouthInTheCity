@@ -12,7 +12,7 @@ adapting projection and coordinates,
 adding 500m buffers aroung the points"""
 
 root_dir = os.path.dirname(os.path.dirname(__file__))
-dir_path = os.path.join(root_dir,"school-map-project", "data")
+dir_path = os.path.join(root_dir,"YouthInTheCity", "data")
 
 def open_filter(df):
     """transforms dataframe into a geodataframe and
