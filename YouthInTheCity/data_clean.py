@@ -57,8 +57,16 @@ def get_final_data(filepath, filename):
     df = clean_data(df)
     df = change_age_bin(df)
     df = change_building_bin(df)
+    df.set_index('PLR_ID', inplace = True)
+    df.rename(columns={'activities' : "economic",
+        'activiti_1' :"education",'activiti_2' : "health_care",'activiti_3': "public_service"}, inplace=True)
     df.drop(columns=['ant_arbeit', 'ant_transf', 'ant_arbe_1', 'ant_tran_1', 'Kinderar_1',
-    'PLR_ID', 'MH_E', 'aenderung_', 'wohnungsve'], inplace = True)
+        'aenderung_', 'wohnungsve','E_EM','E_EW', 'MH_EM', 'MH_EW', 'MH_U1', 'MH_1U6',
+       'MH_6U15', 'MH_15U18', 'MH_18U25', 'MH_25U55', 'MH_55U65', 'MH_65U80',
+       'MH_80U110','anteil_lei','wohnungs_2','Nummer', 'Name', 'EW','BEZ','BZR_ID',
+       'PGR_ID', 'ew2015', 'index_left','mobility_b', 'mobility_1'], inplace = True)
+    #drop the rows that missing y
+    df = df[df['Kinderarmu'].notna()]
     df.to_csv(f"{filepath}/final_data.csv")
     df.to_file(f"{filepath}/final_data.shp")
     return print(f" See the final data with this shape {df.shape} csv and shp file in {filepath}")
