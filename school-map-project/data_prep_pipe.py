@@ -38,7 +38,7 @@ class Trainer(object):
     def set_pipeline(self):
         """defines the pipeline as a class attribute"""
         preproc_pipe = Pipeline([
-            ('knnmputer', KNNImputer(missing_values= np.nan)),
+            ('knnimputer', KNNImputer(missing_values= np.nan)),
             ('robustscaler', RobustScaler())
         ])
         self.pipeline = Pipeline([
