@@ -50,7 +50,7 @@ def query_to_csv():
 
 if __name__ == "__main__":
     #print(query_to_csv())
-    new_querie  = query_params_osm(location=location, keys= query_keys[0], limit='')
+    new_querie  = query_params_osm(location=location, keys= query_names.public_transport, limit='')
     if new_querie != None:
         df = pd.DataFrame(new_querie['elements'])[['lat', 'lon']]
         df.to_csv('YouthInTheCity/data/publi_trans_all')

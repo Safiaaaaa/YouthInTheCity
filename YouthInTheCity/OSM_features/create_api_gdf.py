@@ -10,8 +10,8 @@ import os
 adapting projection and coordinates,
 adding 500m buffers aroung the points"""
 
-root_dir = os.path.dirname(os.path.dirname(__file__))
-dir_path = os.path.join(root_dir,"YouthInTheCity", "data")
+root_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+dir_path = os.path.join(root_dir,"raw_data", "output_maps")
 
 def open_filter(df):
     """transforms dataframe into a geodataframe and
@@ -75,8 +75,8 @@ def query_to_gdf(query_keys, feature_names, target_gdf, location, join_feature, 
 if __name__ == '__main__':
 
     print(query_to_gdf(query_keys=query_keys,
-                 feature_names=feature_names,
-                 target_gdf=target_gdf,
-                 location=location,
-                 join_feature=join_feature,
-                 limit=''))
+                feature_names=feature_names,
+                target_gdf=target_gdf,
+                location=location,
+                join_feature=join_feature,
+                limit=''))
