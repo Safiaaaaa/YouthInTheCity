@@ -3,7 +3,6 @@ import numpy as np
 import geopandas as gpd
 from OSM_query import query_params_osm
 from query_names import query_keys, feature_names, target_gdf, join_feature, location
-from load_raw_data import get_maps_csv
 import time
 import os
 

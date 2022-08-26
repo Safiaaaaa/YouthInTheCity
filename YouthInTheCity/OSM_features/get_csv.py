@@ -1,6 +1,6 @@
 import pandas as pd
 import query_names
-from query_names import query_keys, feature_names, query_keys, feature_names, target_gdf, join_feature, location
+from query_names import feature_names, query_keys, feature_names, target_gdf, join_feature, location
 from OSM_query import query_params_osm
 from create_api_gdf import open_filter, spatial_intersect
 import numpy as np
@@ -49,4 +49,8 @@ def query_to_csv():
             print(f' ------ {name} FAILED 2nd time ------')
 
 if __name__ == "__main__":
-    print(query_to_csv())
+    #print(query_to_csv())
+    new_querie  = query_params_osm(location=location, keys= query_keys[0], limit='')
+    if new_querie != None:
+        df = pd.DataFrame(new_querie['elements'])[['lat', 'lon']]
+        df.to_csv('YouthInTheCity/data/publi_trans_all')

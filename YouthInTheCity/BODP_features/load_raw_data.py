@@ -9,7 +9,7 @@ def load_csvs():
     Returns dataframes following dataframes on Planungraeume level: social index variables (child poverty, enemployment
     rate and rate of welfare beneficiaries), migration data, demographic data
     """
-    root_dir = os.path.dirname(os.path.dirname(__file__))
+    root_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
     dir_path = os.path.join(root_dir,"raw_data", "social_data")
     file_names = os.listdir(dir_path)
     key_names = [file.replace(".csv", "") for file in file_names]
@@ -28,7 +28,7 @@ def load_maps():
     Returns a dataframe with social index variables (child poverty, enemployment
     rate and rate of welfare beneficiaries) on Planungraeume level
     """
-    root_dir = os.path.dirname(os.path.dirname(__file__))
+    root_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
     dir_path = os.path.join(root_dir,"raw_data", "maps")
     file_names = os.listdir(dir_path)
     key_names = []

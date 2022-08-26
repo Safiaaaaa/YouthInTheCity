@@ -1,7 +1,21 @@
+import os
+import sys
 
-""" OSM query keys (per feature) """
+# getting the name of the directory
+# where the this file is present.
+current = os.path.dirname(os.path.realpath(__file__))
+
+# Getting the parent directory name
+# where the current directory is present.
+parent = os.path.dirname(current)
+
+# adding the parent directory to
+# the sys.path.
+sys.path.append(parent)
 
 from BODP_features.load_raw_data import get_maps_csv
+
+""" OSM query keys (per feature) """
 
 public_transport = {'amenity':['bus_station'],
                    'highway':['bus_stop','platform'],
