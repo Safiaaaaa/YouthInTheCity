@@ -52,4 +52,4 @@ def get_maps_csv():
     return merged
 
 if __name__ == "__main__":
-    print(get_maps_csv()['pr_2021'])
+    print(get_maps_csv()['green_vol'])

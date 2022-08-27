@@ -1,28 +1,33 @@
-from OSM_features.create_api_gdf import query_to_gdf
-from BODP_features.merge_bodp_data import  get_bodp_data
+#from OSM_features.create_api_gdf import query_to_gdf
+from operator import ge
 import geopandas as gpd
-from OSM_features.query_names import query_keys
-from OSM_features.create_api_gdf import feature_names, target_gdf, location, join_feature
 import os
+import sys
+from BODP_features.merge_bodp_data import get_bodp_data
+
 
 """Merging all data into one GeoDataFrame"""
 
 root_dir = os.path.dirname(os.path.dirname(__file__))
-dir_path = os.path.join(root_dir,"YouthInTheCity", "data")
+dir_path = os.path.join(root_dir,"raw_data", "output_maps")
 
 def get_final_gdf():
-    api_features = query_to_gdf(query_keys=query_keys,
-                 feature_names=feature_names,
-                 target_gdf=target_gdf,
-                 location=location,
-                 join_feature=join_feature,
-                 limit='')
+    #api_features = query_to_gdf(query_keys=query_keys,
+    #             feature_names=feature_names,
+    #             target_gdf=target_gdf,
+    #             location=location,
+    #             join_feature=join_feature,
+    #             limit='')
     bodp_features = get_bodp_data()
-    #api_features = gpd.read_file('/Users/Safia/code/Safiaaaaa/YouthInTheCity/YouthInTheCity/data/api_features.shp')
-    #bodp_features = gpd.read_file('/Users/Safia/code/Safiaaaaa/YouthInTheCity/YouthInTheCity/data/bodp_features.shp')
-    merged = api_features.merge(bodp_features.drop(columns='geometry'), on='PLR_ID')
-    merged.to_file(os.path.join(dir_path, 'final_gdf.shp'))
-    return merged
+    api_features = gpd.read_file(
+        '../raw_data/output_maps/api_features1.shp')
+    api_features['PLR_ID'] = api_features['PLR_ID'].astype(int)
+    #bodp_features = gpd.read_file(
+    #'../raw_data/output_maps/bodp_features.shp')
+    merged = api_features.merge(
+        bodp_features.drop(columns='geometry'), on='PLR_ID')
+    merged.to_file(os.path.join(dir_path, 'merged_gdf.shp'))
+    return merged.set_index('PLR_ID')
 
 if __name__ == "__main__":
-    print(get_final_gdf())
+    get_final_gdf()
