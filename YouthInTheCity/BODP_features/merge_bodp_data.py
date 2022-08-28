@@ -16,6 +16,7 @@ parent = os.path.dirname(current)
 # adding the parent directory to
 # the sys.path.
 sys.path.append(parent)
+
 from BODP_features.load_raw_data import get_maps_csv
 
 """Functions to merge data from Berlin's open data platform"""
@@ -24,6 +25,8 @@ root_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 dir_path = os.path.join(root_dir,"raw_data", "output_maps")
 pr_2021 = get_maps_csv()['pr_2021'][['PLR_ID','BZR_NAME','geometry']]
 pr_2021['PLR_ID'] = pr_2021['PLR_ID'].astype(int)
+pr_2020 = get_maps_csv()['pr_2020']
+pr_2020['RAUMID'] = pd.to_numeric(pr_2020['Plr_Nummer'])
 
 def create_demo_mig_gdf():
     """returns a gdf with migration and demographic data on planungraum level 2021"""
@@ -31,8 +34,6 @@ def create_demo_mig_gdf():
     # Merge demo and migration df
     mig_data = get_maps_csv()['migration_data']
     gen_data = get_maps_csv()['demo_data']
-    pr_2020 = get_maps_csv()['pr_2020']
-    pr_2020['RAUMID'] = pd.to_numeric(pr_2020['Plr_Nummer'])
     merged_data = gen_data.drop(
     columns=['BEZ', 'PGR', 'BZR', 'PLR', 'STADTRAUM', 'E_E00_01', 'E_E01_02', 'E_E02_03', 'E_E03_05',
        'E_E05_06', 'E_E06_07', 'E_E07_08', 'E_E08_10', 'E_E10_12', 'E_E12_14',
@@ -64,6 +65,29 @@ def create_demo_mig_gdf():
     interpolate['mig_rate'] = interpolate.MH_E / interpolate.E_E
     return interpolate
 
+def create_origin_gdf():
+    ''' returns a gdf with the rate of regions of origin among population
+    with migration background '''
+    origin = get_maps_csv()['origin']
+    # merge df with planungsräume 2020 geodatagrame (449 rows)
+    merged = pr_2020[['RAUMID','geometry']].merge(
+         origin, on='RAUMID')
+    # interpolate data drom pr2020 to pr 2021
+    interpolate = area_interpolate(
+        source_df=merged,
+        target_df= pr_2021,
+        extensive_variables=['MH_E',
+       'HK_EU15', 'HK_EU28', 'HK_Polen', 'HK_EheJug', 'HK_EheSU', 'HK_Turk',
+       'HK_Arab', 'HK_Sonst', 'HK_NZOrd'])
+    columns = ['HK_EU15', 'HK_EU28', 'HK_Polen', 'HK_EheJug', 'HK_EheSU',
+       'HK_Turk', 'HK_Arab', 'HK_Sonst', 'HK_NZOrd']
+    # compute rates
+    for c in columns:
+        interpolate[c] = interpolate[c] / interpolate.MH_E
+    # drop unnecessary column
+    interpolate.drop(columns='MH_E', inplace=True)
+    return interpolate
+
 def create_housing_gdf():
     """ Returns a geodatagrame on planungsräume 2021 with housing data"""
     housing_data = get_maps_csv()['housing_data']
@@ -73,7 +97,6 @@ def create_housing_gdf():
        'wohnungs_1', 'wohnungsve', 'wohnungs_2']
     for c in columns:
         housing_data[f'{c}'] = pd.to_numeric(housing_data[f'{c}'])
-
     # interpolate data to planungsräume level
     interpolate = area_interpolate(
     source_df=housing_data,
@@ -253,19 +276,20 @@ def create_public_transport():
 
 def get_bodp_data():
     merged = create_demo_mig_gdf().merge(
+        create_origin_gdf(), on='geometry').merge(
         create_housing_gdf(), on='geometry').merge(
-            create_social_gdf(), on='geometry').merge(
-                create_umwelt_gdf(), on='geometry').merge(
-                    create_building_age_gdp(), on='geometry').merge(
-                        create_green_gdf(), on='geometry').merge(
-                            create_school_gdf(), on='geometry').merge(
-                                create_kita_gdf(), on='geometry').merge(
-                                    create_public_transport(), on='geometry')
+        create_social_gdf(), on='geometry').merge(
+        create_umwelt_gdf(), on='geometry').merge(
+        create_building_age_gdp(), on='geometry').merge(
+        create_green_gdf(), on='geometry').merge(
+        create_school_gdf(), on='geometry').merge(
+        create_kita_gdf(), on='geometry').merge(
+        create_public_transport(), on='geometry')
 
     merged.to_file(os.path.join(dir_path, 'bodp_features.shp'))
     return merged
 
 
 if __name__ == '__main__':
-    get_bodp_data()
+    create_origin_gdf()
     #print("hello")

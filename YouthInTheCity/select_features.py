@@ -19,9 +19,13 @@ import pandas as pd
 #    gdf['mig_rate'] = gdf.MH_E / gdf.E_E
 #    return gdf
 
-def drop_features(gdf):
-    """ drops redundant features"""
-    gdf.drop(columns=['PLR_ID', 'MH_E', 'MH_EM', 'MH_EW', 'MH_U1', 'MH_1U6',
+def drop_y_na(gdf):
+    gdf = gdf[gdf['child_pov'].notna()]
+    return gdf
+
+def drop_features_regression(gdf):
+    """ drops redundant features / those which correlate too much """
+    gdf.drop(columns=['MH_E', 'MH_EM', 'MH_EW', 'MH_U1', 'MH_1U6',
             'MH_6U15', 'MH_15U18', 'MH_18U25','MH_25U55', 'MH_55U65',
             'MH_65U80', 'MH_80U110','E_E', 'E_EM','E_EW', 'E_EU1',
             'E_E1U6', 'E_E6U15', 'E_E15U18', 'E_E18U25','E_E25U55',
@@ -30,20 +34,36 @@ def drop_features(gdf):
             'welfare', 'x_bis_1900', 'x1901_1910','x1911_1920', 'x1921_1930',
             'x1931_1940', 'x1941_1950', 'x1951_1960','x1961_1970', 'x1971_1980',
             'x1981_1990', 'x1991_2000', 'x2001_2010','x2011_2015', 'ew2015',
-            'dyn_welfar','dyn_child', 'total_buildings', 'B_1940', 'B_1941_1990',
-            'B_1991_2015'], inplace = True)
+            'dyn_welfar','dyn_child', 'total_buil', 'B_1940', 'B_1941_199',
+            'B_1991_201'], inplace = True)
+    gdf.set_index('PLR_ID', inplace=True)
     return gdf
 
-def drop_y_na(gdf):
-    gdf = gdf[gdf['child_pov'].notna()]
+def drop_features_clustering(gdf):
+    """ drops unnecessary features """
+    gdf.drop(columns=['MH_E', 'MH_EM', 'MH_EW', 'MH_U1', 'MH_1U6',
+            'MH_6U15', 'MH_15U18', 'MH_18U25','MH_25U55', 'MH_55U65',
+            'MH_65U80', 'MH_80U110','E_E', 'E_EM','E_EW','EW','x_bis_1900', 'x1901_1910','x1911_1920', 'x1921_1930',
+            'x1931_1940', 'x1941_1950', 'x1951_1960','x1961_1970', 'x1971_1980',
+            'x1981_1990', 'x1991_2000', 'x2001_2010','x2011_2015', 'ew2015','kindergart', 'schools',
+                 'vegpm10', 'change',], inplace = True)
+    gdf.set_index('PLR_ID', inplace=True)
     return gdf
 
-def feature_selection(gdf):
-    gdf = drop_y_na(drop_features(gdf))
+
+def get_reg_gdf(gdf):
+    gdf = drop_y_na(drop_features_regression(gdf))
+    return gdf
+
+def get_clust_gdf(gdf):
+    gdf = drop_y_na(drop_features_clustering(gdf))
     return gdf
 
 
 if __name__ == '__main__':
-    (feature_selection(gpd.read_file(
-        'YouthInTheCity/data/final_gdf.shp'))).to_file(
-            'YouthInTheCity/data/selected_gdf.shp')
+    get_reg_gdf(gpd.read_file(
+        'raw_data/output_maps/merged_gdf.shp')).to_file(
+            'YouthInTheCity/data/regression_gdf.shp')
+    get_clust_gdf(gpd.read_file(
+        'raw_data/output_maps/merged_gdf.shp')).to_file(
+            'YouthInTheCity/data/cluster_gdf.shp')

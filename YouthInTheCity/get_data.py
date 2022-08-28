@@ -20,10 +20,10 @@ def get_final_gdf():
     #             limit='')
     bodp_features = get_bodp_data()
     api_features = gpd.read_file(
-        '../raw_data/output_maps/api_features1.shp')
+        os.path.join('raw_data', 'output_maps' ,'api_features1.shp'))
     api_features['PLR_ID'] = api_features['PLR_ID'].astype(int)
     #bodp_features = gpd.read_file(
-    #'../raw_data/output_maps/bodp_features.shp')
+    #os.path.join(dir_path, 'bodp_features.shp')
     merged = api_features.merge(
         bodp_features.drop(columns='geometry'), on='PLR_ID')
     merged.to_file(os.path.join(dir_path, 'merged_gdf.shp'))
