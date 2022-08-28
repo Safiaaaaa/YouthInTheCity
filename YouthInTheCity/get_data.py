@@ -27,7 +27,7 @@ def get_final_gdf():
     merged = api_features.merge(
         bodp_features.drop(columns='geometry'), on='PLR_ID')
     merged.to_file(os.path.join(dir_path, 'merged_gdf.shp'))
-    return merged.set_index('PLR_ID')
+    return merged
 
 if __name__ == "__main__":
     get_final_gdf()

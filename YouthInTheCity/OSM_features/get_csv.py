@@ -9,8 +9,8 @@ import time
 
 """Loading API responses as CSVs"""
 
-root_dir = os.path.dirname(os.path.dirname(__file__))
-dir_path = os.path.join(root_dir,"YouthInTheCity", "data")
+root_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+dir_path = os.path.join(root_dir,"raw_data", "api_features")
 
 
 def query_to_csv():
