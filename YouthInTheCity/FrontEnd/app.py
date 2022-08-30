@@ -26,17 +26,18 @@ option = st.selectbox(
        'x1961_1970', 'x1971_1980', 'x1981_1990', 'x1991_2000', 'x2001_2010',
        'x2011_2015', 'ew2015'))
 
-st.write(f" Hier is the Maps for  {option} in Berlin")
+st.write(f" Here is the Maps for  {option} in Berlin")
 
 @st.cache
 def get_plotly_data():
-    geojson_path = '/Users/nicha/code/Safiaaaaa/YouthInTheCity/YouthInTheCity/data/plr.geojson'
+    geojson_path = '/Users/nicha/code/Safiaaaaa/YouthInTheCity/YouthInTheCity/data/plr_final.geojson'
     df = pd.read_csv('/Users/nicha/code/Safiaaaaa/YouthInTheCity/YouthInTheCity/data/final_gdf.csv', dtype={'': str})
     with open(geojson_path) as geofile:
-        geojson_file = json.load(geofile)
-        for f in geojson_file['features']:
-            f['id'] = int(f['properties']['PLR_ID'])
-    return df, geojson_file
+        j_file = json.load(geofile)
+    #for f in j_file['features']:
+        #f['id'] = int(f['properties']['PLR_ID'])
+
+    return df, j_file
 
 df, geojson_file = get_plotly_data()
 
