@@ -11,15 +11,15 @@ root_dir = os.path.dirname(os.path.dirname(__file__))
 dir_path = os.path.join(root_dir,"raw_data", "output_maps")
 
 def get_final_gdf():
-    api_features = query_to_gdf(query_keys=query_keys,
-                 feature_names=feature_names,
-                 target_gdf=target_gdf,
-                 location=location,
-                 join_feature=join_feature,
-                 limit='')
+    #api_features = query_to_gdf(query_keys=query_keys,
+    #             feature_names=feature_names,
+    #             target_gdf=target_gdf,
+    #             location=location,
+    #             join_feature=join_feature,
+    #             limit='')
     bodp_features = get_bodp_data()
-    #api_features = gpd.read_file(
-    #    os.path.join('raw_data', 'output_maps' ,'api_features1.shp'))
+    api_features = gpd.read_file(
+        os.path.join('raw_data', 'output_maps' ,'api_features1.shp'))
     api_features['PLR_ID'] = api_features['PLR_ID'].astype(int)
     #bodp_features = gpd.read_file(
     #os.path.join(dir_path, 'bodp_features.shp')

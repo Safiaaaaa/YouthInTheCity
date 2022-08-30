@@ -1,7 +1,7 @@
 from http.client import SWITCHING_PROTOCOLS
 from textwrap import indent
 import requests
-from query_names import outdoor_leisure
+from OSM_features.query_names import outdoor_leisure
 
 """ Functions to send request to OSM's API """
 
@@ -14,10 +14,6 @@ def param_nodes(keys):
         for v in val:
             osm_keys += f"""node['{k}'='{v}'](area.city);"""
     return osm_keys
-
-culture = {'amenity':['theatre','public_bookcase', 'events_venue',
-        'cinema','arts_centre', 'museum', 'cultural_center', 'gallery',
-        'events_venue', 'planetarium']}
 
 def query_params_osm(location, keys, limit=''):
     '''Adding keys and values as a dictionary, example: keys_values_osm = {'amenity':['bbq','cafe']}

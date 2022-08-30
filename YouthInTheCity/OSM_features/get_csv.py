@@ -1,8 +1,7 @@
 import pandas as pd
-import query_names
 from query_names import query_keys, feature_names, query_keys, feature_names, target_gdf, join_feature, location
-from OSM_query import query_params_osm
-from create_api_gdf import open_filter, spatial_intersect
+from OSM_features.OSM_query import query_params_osm
+from OSM_features.create_api_gdf import open_filter, spatial_intersect
 import numpy as np
 import os
 import time

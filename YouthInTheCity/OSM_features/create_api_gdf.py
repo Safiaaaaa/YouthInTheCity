@@ -1,11 +1,18 @@
 import pandas as pd
-import geopandas as gpd
-from query_names import feature_names, query_keys, feature_names, target_gdf, join_feature, location
-from OSM_query import query_params_osm
-from create_api_gdf import open_filter, spatial_intersect
 import numpy as np
+import geopandas as gpd
+import sys
 import os
+# getting the name of the directory where the this file is present.
+current = os.path.dirname(os.path.realpath(__file__))
+# Getting the parent directory name where the current directory is present.
+parent = os.path.dirname(current)
+# adding the parent directory to the sys.path.
+sys.path.append(parent)
+from OSM_features.OSM_query import query_params_osm
+#from OSM_features.query_names import query_keys, feature_names, target_gdf, join_feature, location
 import time
+import os
 
 """Transforming API features from csv to geodataframe,
 adapting projection and coordinates,
@@ -75,9 +82,10 @@ def query_to_gdf(query_keys, feature_names, target_gdf, location, join_feature, 
 
 if __name__ == '__main__':
 
-    print(query_to_gdf(query_keys=query_keys,
-                 feature_names=feature_names,
-                 target_gdf=target_gdf,
-                 location=location,
-                 join_feature=join_feature,
-                 limit=''))
+    #print(query_to_gdf(query_keys=query_keys,
+     #            feature_names=feature_names,
+      #           target_gdf=target_gdf,
+       #          location=location,
+        #         join_feature=join_feature,
+         #        limit=''))
+    print(sys.path)
