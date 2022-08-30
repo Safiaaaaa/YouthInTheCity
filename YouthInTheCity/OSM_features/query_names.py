@@ -1,7 +1,17 @@
 
+import os
+import sys
+# getting the name of the directory where the this file is present.
+current = os.path.dirname(os.path.realpath(__file__))
+# Getting the parent directory name where the current directory is present.
+parent = os.path.dirname(current)
+# adding the parent directory to the sys.path.
+sys.path.append(parent)
+
+from BODP_features.load_raw_data import get_maps_csv
+
 """ OSM query keys (per feature) """
 
-from load_raw_data import get_maps_csv
 
 public_transport = {'amenity':['bus_station'],
                    'highway':['bus_stop','platform'],
@@ -29,27 +39,28 @@ health_care = {'amenity':['baby_hatch','clinic','dentist', 'doctors', 'hospital'
 public_service = {'amenity':['courthouse','fire_station','police',
                       'post_box', 'post_office', 'townhall']}
 
-schools = {'amenity':['school', 'gymnasium', 'Grundschule', 'Schule']}
+#schools = {'amenity':['school', 'gymnasium', 'Grundschule', 'Schule']}
 
 universities = {'amenity':['college','university']}
 
-kindergarten = {'amenity': ['kindergarten', 'childcare', 'preschool']}
+#kindergarten = {'amenity': ['kindergarten', 'childcare', 'preschool']}
 
 outdoor_facilities = {'amenity':['bbq', 'bench', 'drinking_water', 'give_box','shelter',
             'telephone', 'water_point'],
             'leisure':['bandstand', 'picnic_table']}
 
-asylum = {'amenity': ['refugee_site']}
+#asylum = {'amenity': ['refugee_site']}
 
 outdoor_leisure = {'leisure':['swimming_pool', 'park','playground','garden','swimming_area']}
 
 water = {'natural':['water','beach', 'lake', 'river', 'shore'],
          'amenity':['fountain']}
-query_keys = [public_transport, eating, night_life, culture, community, health_care, public_service, education, schools, universities, kindergarten, outdoor_facilities, outdoor_leisure, water]
+
+query_keys = [public_transport, eating, night_life, culture, community, health_care, public_service, education, universities, outdoor_facilities, outdoor_leisure, water]
 
 feature_names = ['public_transport', 'eating', 'night_life', 'culture', 'community',
-                    'health_care', 'public_service', 'education', 'schools',
-                    'universities', 'kindergarten', 'outdoor_facilities',
+                    'health_care', 'public_service', 'education',
+                    'universities', 'outdoor_facilities',
                     'outdoor_leisure', 'water']
 
 
@@ -60,3 +71,6 @@ target_gdf = pr_2021
 join_feature = 'PLR_ID'
 
 location = 'Berlin'
+
+if __name__ == '__main__':
+    print(pr_2021)

@@ -1,18 +1,18 @@
 import pandas as pd
-import numpy as np
 import geopandas as gpd
+from query_names import feature_names, query_keys, feature_names, target_gdf, join_feature, location
 from OSM_query import query_params_osm
-from query_names import query_keys, feature_names, target_gdf, join_feature, location
-from load_raw_data import get_maps_csv
-import time
+from create_api_gdf import open_filter, spatial_intersect
+import numpy as np
 import os
+import time
 
 """Transforming API features from csv to geodataframe,
 adapting projection and coordinates,
 adding 500m buffers aroung the points"""
 
-root_dir = os.path.dirname(os.path.dirname(__file__))
-dir_path = os.path.join(root_dir,"YouthInTheCity", "data")
+root_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+dir_path = os.path.join(root_dir,"raw_data", "output_maps")
 
 def open_filter(df):
     """transforms dataframe into a geodataframe and
