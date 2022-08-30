@@ -8,15 +8,15 @@ from tobler.area_weighted import area_interpolate
 #from . import load_raw_data
 import os
 import sys
-current = os.path.dirname(os.path.realpath(__file__))
+#current = os.path.dirname(os.path.realpath(__file__))
 
 # Getting the parent directory name
 # where the current directory is present.
-parent = os.path.dirname(current)
+#parent = os.path.dirname(current)
 
 # adding the parent directory to
 # the sys.path.
-sys.path.append(parent)
+#sys.path.append(parent)
 
 from BODP_features.load_raw_data import get_maps_csv
 
@@ -107,7 +107,7 @@ def create_housing_gdf():
        'wohnungs_1', 'wohnungsve', 'wohnungs_2'])
     interpolate.columns =  ['ave_rent', 'dyn_wel_po', 'welf_po', 'social_housing',
                             'public_housing', 'dyn_ew', 'five_y_pls', 'rent_to_pr',
-                            'dyn_r_to_pr', 'sales', 'dyn_sales', 'geometry'
+                            'dyn_r_to_p', 'sales', 'dyn_sales', 'geometry'
                               ]
     #merged_data_2021 = pr_2021[['geometry']].merge(interpolate, on='geometry')
     return interpolate
@@ -123,9 +123,9 @@ def create_social_gdf():
         social_index[f'{c}'] = pd.to_numeric(social_index[f'{c}'])
     social_index['PLR_ID'] = pd.to_numeric(social_index.Nummer)
     social_index.drop(columns=['Nummer', 'Name'], inplace=True)
-    social_index.columns = ['EW', 'unemployment', 'welfare',
+    social_index.columns = ['EW', 'unempl', 'welfare',
                             'child_pov', 'dyn_unempl',
-                            'dyn_welfare', 'dyn_child', 'PLR_ID']
+                            'dyn_welf', 'dyn_child', 'PLR_ID']
     merged = pr_2021.merge(social_index, on='PLR_ID')
     return merged
 
@@ -197,14 +197,14 @@ def create_building_age_gdp():
                             extensive_variables=['x_bis_1900', 'x1901_1910', 'x1911_1920', 'x1921_1930',
        'x1931_1940', 'x1941_1950', 'x1951_1960', 'x1961_1970', 'x1971_1980',
        'x1981_1990', 'x1991_2000', 'x2001_2010', 'x2011_2015', 'ew2015'])
-    interpol['total_buildings'] = np.sum(interpol[['x_bis_1900','x1901_1910',
+    interpol['tot_build'] = np.sum(interpol[['x_bis_1900','x1901_1910',
     'x1911_1920', 'x1921_1930', 'x1931_1940', 'x1941_1950', 'x1951_1960',
     'x1961_1970', 'x1971_1980', 'x1981_1990', 'x1991_2000', 'x2001_2010',
     'x2011_2015']], axis=1)
-    interpol['B_1940'] = (interpol['x_bis_1900'] + interpol['x1901_1910'] + interpol['x1911_1920'] + interpol['x1921_1930']+ interpol['x1931_1940'])/ interpol['total_buildings']
-    interpol['B_1941_1990'] = (interpol['x1941_1950'] + interpol['x1951_1960'] + interpol['x1961_1970'] + interpol['x1971_1980'] + interpol['x1981_1990'])/ interpol['total_buildings']
-    interpol['B_1991_2015'] = (interpol['x1991_2000'] + interpol['x2001_2010'] + interpol['x2011_2015'])/ interpol['total_buildings']
-    interpol['B_age'] = interpol[['B_1940','B_1941_1990','B_1991_2015']].idxmax(axis=1)
+    interpol['B1940'] = (interpol['x_bis_1900'] + interpol['x1901_1910'] + interpol['x1911_1920'] + interpol['x1921_1930']+ interpol['x1931_1940'])/ interpol['tot_build']
+    interpol['B1941_1990'] = (interpol['x1941_1950'] + interpol['x1951_1960'] + interpol['x1961_1970'] + interpol['x1971_1980'] + interpol['x1981_1990'])/ interpol['tot_build']
+    interpol['B1991_2015'] = (interpol['x1991_2000'] + interpol['x2001_2010'] + interpol['x2011_2015'])/ interpol['tot_build']
+    interpol['B_age'] = interpol[['B1940','B1941_1990','B1991_2015']].idxmax(axis=1)
     return interpol
 
 def create_green_gdf():

@@ -4,12 +4,13 @@ import pandas as pd
 from sklearn.preprocessing import RobustScaler
 from sklearn.impute import KNNImputer
 from get_data import get_final_gdf
+import sys
 
 knn=KNNImputer()
 robust = RobustScaler()
 
 """ Drops unnecessary features and transforms some (e.g. absolute numbers to rate)"""
-#----> muss noch pipeline hinzufügen / pb index reset ?
+#----> PROBLEM with IMPORT _ no module called OSM_query
 #def building_age_main(gdf):
 #   gdf['total_buildings'] = np.sum(gdf[['x_bis_1900','x1901_1910',
 #       'x1911_1920', 'x1921_1930', 'x1931_1940', 'x1941_1950', 'x1951_1960',
@@ -37,12 +38,12 @@ def drop_features_regression(gdf):
             'MH_65U80', 'MH_80U110','E_E', 'E_EM','E_EW', 'E_EU1',
             'E_E1U6', 'E_E6U15', 'E_E15U18', 'E_E18U25','E_E25U55',
             'E_E55U65', 'E_E65U80', 'E_E80U110', 'dyn_wel_po', 'welf_po',
-            'rent_to_pr', 'dyn_r_to_p', 'sales', 'EW', 'unemployme',
+            'rent_to_pr', 'dyn_r_to_p', 'sales', 'EW', 'unempl',
             'welfare', 'x_bis_1900', 'x1901_1910','x1911_1920', 'x1921_1930',
             'x1931_1940', 'x1941_1950', 'x1951_1960','x1961_1970', 'x1971_1980',
             'x1981_1990', 'x1991_2000', 'x2001_2010','x2011_2015', 'ew2015',
-            'dyn_welfar','dyn_child', 'total_buil', 'B_1940', 'B_1941_199',
-            'B_1991_201', 'B_age'], inplace = True)
+            'dyn_welf','dyn_child', 'tot_build', 'B1940', 'B1941_1990',
+            'B1991_2015', 'B_age'], inplace = True)
     return gdf
 
 def drop_features_clustering(gdf):
@@ -74,7 +75,7 @@ def get_clust_gdf(gdf):
     set PLR_ID as index"""
 
     gdf = drop_y_na(drop_features_clustering(gdf)).reset_index(drop=True)
-    X = gdf.drop(columns=['PLR_ID','geometry', 'BZR_NAME', 'child_pov',  'B_age'])
+    X = gdf.drop(columns=['PLR_ID','geometry', 'BZR_NAME', 'B_age'])
     columns = list(X.columns)
     X_imputed = knn.fit_transform(X)
     X_transformed = robust.fit_transform(X_imputed)
@@ -98,3 +99,4 @@ if __name__ == '__main__':
             'YouthInTheCity/data/regression_gdf.shp')
     get_clust_gdf(get_final_gdf()).to_file(
             'YouthInTheCity/data/cluster_gdf.shp')
+    print(sys.path)
