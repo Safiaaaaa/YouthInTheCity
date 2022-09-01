@@ -1,9 +1,16 @@
 import pandas as pd
 import numpy as np
 import geopandas as gpd
-from OSM_query import query_params_osm
-from query_names import query_keys, feature_names, target_gdf, join_feature, location
-from load_raw_data import get_maps_csv
+import sys
+import os
+# getting the name of the directory where the this file is present.
+current = os.path.dirname(os.path.realpath(__file__))
+# Getting the parent directory name where the current directory is present.
+parent = os.path.dirname(current)
+# adding the parent directory to the sys.path.
+sys.path.append(parent)
+from OSM_features.OSM_query import query_params_osm
+#from OSM_features.query_names import query_keys, feature_names, target_gdf, join_feature, location
 import time
 import os
 
@@ -11,8 +18,8 @@ import os
 adapting projection and coordinates,
 adding 500m buffers aroung the points"""
 
-root_dir = os.path.dirname(os.path.dirname(__file__))
-dir_path = os.path.join(root_dir,"YouthInTheCity", "data")
+root_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+dir_path = os.path.join(root_dir,"raw_data", "output_maps")
 
 def open_filter(df):
     """transforms dataframe into a geodataframe and
@@ -75,9 +82,10 @@ def query_to_gdf(query_keys, feature_names, target_gdf, location, join_feature, 
 
 if __name__ == '__main__':
 
-    print(query_to_gdf(query_keys=query_keys,
-                 feature_names=feature_names,
-                 target_gdf=target_gdf,
-                 location=location,
-                 join_feature=join_feature,
-                 limit=''))
+    #print(query_to_gdf(query_keys=query_keys,
+     #            feature_names=feature_names,
+      #           target_gdf=target_gdf,
+       #          location=location,
+        #         join_feature=join_feature,
+         #        limit=''))
+    print(sys.path)

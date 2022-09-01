@@ -1,16 +1,15 @@
 import pandas as pd
-import query_names
 from query_names import query_keys, feature_names, query_keys, feature_names, target_gdf, join_feature, location
-from OSM_query import query_params_osm
-from create_api_gdf import open_filter, spatial_intersect
+from OSM_features.OSM_query import query_params_osm
+from OSM_features.create_api_gdf import open_filter, spatial_intersect
 import numpy as np
 import os
 import time
 
 """Loading API responses as CSVs"""
 
-root_dir = os.path.dirname(os.path.dirname(__file__))
-dir_path = os.path.join(root_dir,"YouthInTheCity", "data")
+root_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+dir_path = os.path.join(root_dir,"raw_data", "api_features")
 
 
 def query_to_csv():
