@@ -75,8 +75,8 @@ fig = px.choropleth_mapbox(
         geojson= geojson_file,
         locations="PLR_ID",
         color="label",
-        color_continuous_scale="Rainbow",
-        range_color=(df[color_option].max(), df[color_option].min()),
+        #color_continuous_scale="Rainbow",
+        #range_color=(df[color_option].max(), df[color_option].min()),
         mapbox_style="open-street-map",
         zoom=9,
         center={
@@ -86,6 +86,7 @@ fig = px.choropleth_mapbox(
         labels= {f"{color_option}: {color_option} amount"},
         hover_name='PLR_NAME',
         hover_data= ['child_pov'] + hover_datas)
+fig.update_geos(fitbounds="locations", visible=False)
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0},coloraxis_colorbar=dict(
     title="clustering",
     thicknessmode="pixels",
