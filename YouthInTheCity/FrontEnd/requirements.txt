@@ -1,0 +1,41 @@
+# packaging
+pip>=9
+setuptools>=26
+twine
+wheel>=0.29
+
+# data science
+numpy
+pandas
+scikit-learn
+notebook
+matplotlib
+seaborn
+
+# tests/linter
+black
+coverage
+flake8
+pytest
+yapf
+
+#Geodata
+geopandas
+pygeos
+rtree
+fiona
+tobler
+pysal
+
+# API
+gcsfs
+mlflow
+s3fs
+requests
+streamlit
+watchdog
+# utilities
+six>=1.14
+joblib
+memoized-property
+termcolor
