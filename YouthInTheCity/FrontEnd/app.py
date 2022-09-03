@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import geopandas as gdp
 import plotly.express as px
 
-df = pd.read_csv('/Users/nicha/code/Safiaaaaa/YouthInTheCity/YouthInTheCity/data/labeled.csv', dtype={'': str})
+df = pd.read_csv('../data/labeled.csv', dtype={'': str})
 '''
 # Youth in the City RESULTs
 '''
@@ -23,8 +23,8 @@ st.write(f" Here is the Maps for {option} in Berlin")
 
 @st.cache
 def get_plotly_data():
-    geojson_path = '/Users/nicha/code/Safiaaaaa/YouthInTheCity/YouthInTheCity/data/geodata_readytouse.geojson'
-    df = pd.read_csv('/Users/nicha/code/Safiaaaaa/YouthInTheCity/YouthInTheCity/data/labeled.csv', dtype={'': str})
+    geojson_path = '../data/geodata_readytouse.geojson'
+    df = pd.read_csv('../data/labeled.csv', dtype={'': str})
     with open(geojson_path) as geofile:
         j_file = json.load(geofile)
     #for f in j_file['features']:

@@ -48,7 +48,7 @@ def drop_features_regression(gdf):
 
 def drop_features_clustering(gdf):
     """ drops unnecessary features """
-    gdf.drop(columns=['MH_E', 'MH_EM', 'MH_EW', 'MH_U1', 'MH_1U6',
+    gdf.drop(columns=['MH_E', 'MH_EM', 'MH_EW', 'MH_U1', 'MH_1U6','dyn_wel_po', 'welf_po',
             'MH_6U15', 'MH_15U18', 'MH_18U25','MH_25U55', 'MH_55U65',
             'MH_65U80', 'MH_80U110','E_E', 'E_EM','E_EW','EW','x_bis_1900', 'x1901_1910','x1911_1920', 'x1921_1930',
             'x1931_1940', 'x1941_1950', 'x1951_1960','x1961_1970', 'x1971_1980',
@@ -77,8 +77,7 @@ def get_clust_gdf(gdf):
     gdf = drop_y_na(drop_features_clustering(gdf)).reset_index(drop=True)
     X = gdf.drop(columns=['PLR_ID','geometry', 'BZR_NAME', 'B_age'])
     columns = list(X.columns)
-    X_imputed = knn.fit_transform(X)
-    X_transformed = robust.fit_transform(X_imputed)
+    X_transformed = knn.fit_transform(X)
     X_transformed = pd.DataFrame(X_transformed)
     X_transformed.columns = columns
     for c in columns:
@@ -91,12 +90,12 @@ if __name__ == '__main__':
     #get_reg_gdf(gpd.read_file(
     #    'raw_data/output_maps/merged_gdf.shp')).to_file(
     #        'YouthInTheCity/data/regression_gdf.shp')
-    #get_clust_gdf(gpd.read_file(
-    #    'raw_data/output_maps/merged_gdf.shp')).to_file(
-    #        'YouthInTheCity/data/cluster_gdf.shp')
-
-    get_reg_gdf(get_final_gdf()).to_file(
-            'YouthInTheCity/data/regression_gdf.shp')
-    get_clust_gdf(get_final_gdf()).to_file(
+    get_clust_gdf(gpd.read_file(
+        'raw_data/output_maps/merged_gdf.shp')).to_file(
             'YouthInTheCity/data/cluster_gdf.shp')
-    print(sys.path)
+
+    #get_reg_gdf(get_final_gdf()).to_file(
+    #        'YouthInTheCity/data/regression_gdf.shp')
+    #get_clust_gdf(get_final_gdf()).to_file(
+    #        'YouthInTheCity/data/cluster_gdf.shp')
+    #print(sys.path)
