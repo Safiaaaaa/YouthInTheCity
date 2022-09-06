@@ -19,8 +19,7 @@ def get_fullname(column_name, df):
     df_filtern = df[df.column_name == column_name]
     return df_filtern.fullname.values
 
-option = st.selectbox(
-     'Which feature do you like to see on Berlin Maps?',
+option = st.selectbox('Which feature do you like to see on Berlin Maps?',
      ('Migration in %',
  'Unemployment in %',
  'Welfare beneficiaries in %',
@@ -64,7 +63,7 @@ option = st.selectbox(
  'Number of kindergartens ',
  'Number of rail / u-bahn / s-bahn, tram stations'))
 
-st.write(f" Here is {option} in Berlin")
+st.write(f" Here is {option} in each Planningarea")
 
 @st.cache
 def get_plotly_data():
@@ -77,14 +76,13 @@ def get_plotly_data():
 df, geojson_file = get_plotly_data()
 
 color = get_columnname(str(option), df_fullname)
-
 fig = px.choropleth_mapbox(
         data_frame = df_final,
         geojson=geojson_file,
         locations="PLR_ID",
         color=color,
         color_continuous_scale="Viridis",
-        range_color=(df[color].max(), df[color].min()),
+        range_color=(df_final[color].max(), df_final[color].min()),
         mapbox_style="open-street-map",
         zoom=9,
         center={
@@ -94,7 +92,7 @@ fig = px.choropleth_mapbox(
         opacity=0.5,
         #labels= {f"{color}: {color} amount"},
         hover_name='PLR_NAME',
-        #hover_data={'PLR_ID':False, 'child_pov':True, color: True}
+        hover_data={'PLR_ID':False, 'child_pov':True, color: True}
         )
 fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 fig.show()
