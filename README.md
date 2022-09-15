@@ -1,76 +1,9 @@
-# Data analysis
-- Document here the project: school-map-project
-- Description: 
-Socially optimizing school mapping
-https://docs.google.com/document/d/1ZMbCyd_5yRGwUTH72TnFAWoEiFYsDecQgGJcBjcfFVM/edit
-- Data Source:
-- Type of analysis:
+# Analizing the context of child poverty in Berlin
 
-Please document the project the better you can.
+Poverty is not only a material matter; it affects children’s everyday life, their social network, their educational chances, even their health. Associated with social segregation, which prevents children to be in touch with other milieus, it can become a hardly escapable trap.
 
-# Startup the project
+In order to better understand if, how and why child poverty is clustered in Berlin, we collected more than 100 geodata features from <a href="https://www.openstreetmap.org/#map=5/51.330/10.453">OpenStreetMap<a>  and <a href="https://daten.berlin.de/">Berlin Open Data platform<a>  and aggregated them to the level of the 542 planning areas, the smallest statistical areas, on which social data is publicly available. 
 
-The initial setup.
+Have a look at a selection of our data and results on our <a href="https://appyouthinthecity.herokuapp.com/">web app<a>!
 
-Create virtualenv and install the project:
-```bash
-sudo apt-get install virtualenv python-pip python-dev
-deactivate; virtualenv ~/venv ; source ~/venv/bin/activate ;\
-    pip install pip -U; pip install -r requirements.txt
-```
-
-Unittest test:
-```bash
-make clean install test
-```
-
-Check for school-map-project in gitlab.com/{group}.
-If your project is not set please add it:
-
-- Create a new project on `gitlab.com/{group}/school-map-project`
-- Then populate it:
-
-```bash
-##   e.g. if group is "{group}" and project_name is "school-map-project"
-git remote add origin git@github.com:{group}/school-map-project.git
-git push -u origin master
-git push -u origin --tags
-```
-
-Functionnal test with a script:
-
-```bash
-cd
-mkdir tmp
-cd tmp
-school-map-project-run
-```
-
-# Install
-
-Go to `https://github.com/{group}/school-map-project` to see the project, manage issues,
-setup you ssh public key, ...
-
-Create a python3 virtualenv and activate it:
-
-```bash
-sudo apt-get install virtualenv python-pip python-dev
-deactivate; virtualenv -ppython3 ~/venv ; source ~/venv/bin/activate
-```
-
-Clone the project and install it:
-
-```bash
-git clone git@github.com:{group}/school-map-project.git
-cd school-map-project
-pip install -r requirements.txt
-make clean install test                # install and test
-```
-Functionnal test with a script:
-
-```bash
-cd
-mkdir tmp
-cd tmp
-school-map-project-run
-```
+This project was conducted by Maciej Szuba , Nichanok Auevechanichkul and Safia Ahmedou as part of a Data Science Bootcamp at Le Wagon (batch #874) in September 2022.
