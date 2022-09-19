@@ -2,7 +2,7 @@
 
 Poverty is not only a material matter; it affects children’s everyday life, their social network, their educational chances, even their health. Associated with social segregation, which prevents children to be in touch with other milieus, it can become a hardly escapable trap. Is child poverty clustered in Berlin? If so, how and why? 
 
-## Data collection and processing 
+## Data collection and processing
 
 We collected more than 100 geodata features from <a href="https://www.openstreetmap.org/#map=5/51.330/10.453">OpenStreetMap<a>  and <a href="https://daten.berlin.de/">Berlin Open Data platform<a>, including data on demographics, housing, urban planning and migration. 
 
@@ -16,7 +16,7 @@ We had to drop the 6 planning areas with the least residents because we did not 
 ## Clustering 
 
 We used K-means clustering to observe patterns in our data. We identified spatial patterns with regards to social data: there are clear (very) high child poverty clusters (see map below), planning areas with higher or lower social index (an index built by unemployement rate, child poverty and share of beneficiaries of social welfare) are not randomly distributed throughout space. They tend to form regions. 
-We also observed a very clear infrastructural difference between center and periphery. 
+We also observed a very clear infrastructural difference between center and periphery.
 
 ## Spatial regression
 
@@ -28,8 +28,7 @@ We decided to focus on the correlation between infrastructure and child poverty.
 Our baseline model was a regular OLS regression (we used Pysal spreg OLS model). With an R2 from 0.36, it gave us fairly good results: we were able to explain 36% of the variablity of child poverty based on our selection of 10 infrastructural features. However, white test for heteroskedasticity was very significant, meaning our residuals where not randomly distributed, which violates a central assumption of an OLS regression and meant the calculated coefficients could not trusted. 
 
 Moran's I test on the regression's residuals was also significant, which meant residuals were spatially autocorrelated and we should turn to spatial regressions. 
-
-(tbc...)
+According to Lagrange multiplier tests for both error and lagged models were significant, even in thei robust version. This 
 
 Have a look at a selection of our data and results on our <a href="https://appyouthinthecity.herokuapp.com/">web app<a>!
   
