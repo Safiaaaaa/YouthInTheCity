@@ -28,7 +28,7 @@ We decided to focus on the correlation between infrastructure and child poverty.
 Our baseline model was a regular OLS regression (we used Pysal spreg OLS model). With an R2 from 0.36, it gave us fairly good results: we were able to explain 36% of the variablity of child poverty based on our selection of 10 infrastructural features. However, white test for heteroskedasticity was very significant, meaning our residuals where not randomly distributed, which violates a central assumption of an OLS regression and meant the calculated coefficients could not trusted. 
 
 Moran's I test on the regression's residuals was also significant, which meant residuals were spatially autocorrelated and we should turn to spatial regressions. 
-According to Lagrange multiplier tests for both error and lagged models were significant, even in thei robust version. This 
+According to Lagrange multiplier tests for both error and lagged models were significant, even in thei robust version. TBC... 
 
 Have a look at a selection of our data and results on our <a href="https://appyouthinthecity.herokuapp.com/">web app<a>!
   
