@@ -90,7 +90,7 @@ Here is a comparison of the repartition and the value of our residuals between o
 Against the idea of infrastructural deserts, which are observed in other cities, e.g. in the US, we found that child poverty is not systematically correlated with a lack of cultural institutions, outdoor facilities or schools. Our model further identified two very significant features for child poverty: social housing and public housing. Here is an overview of the regression coefficients outputed by our model: 
 
 <p align="center">
-<img alt="regression z coefficients" src="z_stat.png"/>
+<img alt="regression z coefficients" width="75%" src="z_stat.png"/>
 </p>
 <p align="center">
 <b>Fig. 5 Features significance of ML Lag Regimes model (z coefficients) </b>
