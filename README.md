@@ -13,8 +13,9 @@ Working with Geopandas and Pysal, we used spatial join and areal interpolation t
 Our full dataset had 105 columns and 542 rows. 
 We had to drop the 6 planning areas with the least residents because we did not have their child poverty rate and imputed other missing value with Sklearn KNN Imputer. 
 
+<p align="center">
 [<img alt="Wordcloud" src="Worldcloud.png"/>](https://appyouthinthecity.herokuapp.com/)
-
+<p>
   
 ## Clustering 
 
@@ -49,17 +50,16 @@ Error models did not perform much better than the OLS regression (Pseudo R2 of 0
 #### Lag models
 In lag model, spatial autocorrelation is considered as a feature: the y values of neighbours is added to the regression equation. 
 By far, lag models outperformed all other models. Adding regimes still imprive the performance of the model, which implies that there are still significant infrastructural differences between East and West Berlin. 
-
-Here is a summuray of the model performances
     
 <p align="center">
+Summuray of the models performances
 <img alt="model metrics" width="400px" src="metrics.png"/>
 </p>
 
-Here is a comparison of the repartition and the value of our residuals between our baseline model and our best performing model
+Here is a comparison of the repartition and the value of our residuals between our baseline model and our best performing model. In red regions, the models underestimated child poverty. In blue regions, they overestimated it. 
     
 <p align="center">
-<img alt="residuals comparison" src="residuals.gif"/>
+<img alt="residuals comparison" src="residuals_regimes.gif"/>
 </p>
 
 According to Lagrange multiplier tests for both error and lagged models were significant, even in thei robust version. TBC... 
