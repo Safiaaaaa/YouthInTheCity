@@ -49,27 +49,30 @@ We decided to focus on the correlation between infrastructure and child poverty.
 - Target (dependent variable): Child poverty
 - Features (independent / explanatory features): a selection of 10 infrastructural features (cultural institutions, schools and kindergartens, social housing, public housing, outdoor furnitures, parks and playgrounds, train stations, places for extracurricular education). 
 
-### Baseline: OLS Regression
-Our baseline model was a regular OLS regression (we used Pysal spreg OLS model). With an R2 from 0.36, it gave us fairly good results: we were able to explain 36% of the variablity of child poverty based on our selection of 10 infrastructural features. However, white test for heteroskedasticity was very significant, meaning our residuals where not randomly distributed, which violates a central assumption of an OLS regression and meant the calculated coefficients could not trusted. 
-
-Moran's I test on the regression's residuals was also significant, which meant residuals were spatially autocorrelated.
+* **Baseline: OLS Regression**
+    - Our baseline model was a regular OLS regression (we used Pysal spreg OLS model)
+    - With an R2 from 0.36, it gave us fairly good results: we were able to explain 36% of the variablity of child poverty based on our selection of 10 infrastructural features
+    - However, white test for heteroskedasticity was very significant, meaning our residuals where not randomly distributed, which violates a central assumption of an OLS regression and meant the calculated coefficients could not trusted. 
+    - Moran's I test on the regression's residuals was also significant, which meant residuals were spatially autocorrelated.
     
-### OLS Regression with regime
-We added space manually to our model thanks to a regime, allowing it to output different coefficients between East and West Berlin. This gave a slightly higher R2 for East Berlin (0.37 vs. 0,36 for West Berlin). Furthermore, white test for both regimes were not significant anymore. Differentating between EAst and West Berlin improved our model. 
+* **OLS Regression with regime**
+    - We added space manually to our model thanks to a regime, allowing it to output different coefficients between East and West Berlin. 
+    - This improved our model gave a slightly higher R2 for East Berlin (0.37 vs. 0,36 for West Berlin).
+    - White test for both regimes were not significant anymore. 
+    - According to spatial diagnostics (Moran'I and Lagrange Multriplier tests) however, there were still lag spatial effects, so we turned to **spatial regressions**. 
     
-According to spatial diagnostics (Moran'I and Lagrange Multriplier tests) however, there were still lag spatial effects, so we turned to spatial regressions. 
-
-### Spatial regression
 We conducted both error and lag models, with and without regimes. Considering some planning areas are very small and might be impacted by infrastructures of planning areas which don't share a border, we used inverse distance weights.
 
-
-#### Error models
-In error models, spatial autocorrelation is considered as noise and added to the error term of the regression equation. Theoretically, this would imply that neighbouring observations are similar because they share the same characterics, and not because they influence each other. 
-Error models did not perform much better than the OLS regression (Pseudo R2 of 0.38). 
+* **Error models**
+    - In error models, spatial autocorrelation is considered as noise and added to the error term of the regression equation. 
+    - Theoretically, this would imply that neighbouring observations are similar because they share the same characterics, and not because they influence each other. 
+    - Error models did not perform much better than the OLS regression (Pseudo R2 of 0.38). 
     
-#### Lag models
-In lag model, spatial autocorrelation is considered as a feature: the y values of neighbours is added to the regression equation. 
-By far, lag models outperformed all other models. Adding regimes still imprive the performance of the model, which implies that there are still significant infrastructural differences between East and West Berlin. 
+* **Lag models**
+    - In lag models, spatial autocorrelation is considered as a feature: the y values of neighbours is added to the regression equation. 
+    - They theoretically imply that neighbouring observations are influencing each other.
+    - By far, lag models outperformed all other models, which is inline with the fact that the social context is the biggest factor for child poverty. 
+    - Adding regimes improved the performance of the model, which confirms that there are still significant infrastructural differences between East and West Berlin. 
 
 <p align="center">
 <img alt="model metrics" width="400px" src="metrics.png"/>
