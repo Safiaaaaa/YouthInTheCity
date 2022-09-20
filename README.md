@@ -7,7 +7,7 @@ Is child poverty clustered in Berlin? If so, how and why?
 A Moran's I test on child poverty in Berlin answered our first question: there is social segreation in Berlin and child poverty is clustered. Just looking at the spatial distribution makes this fact very clear (see Fig. 1 below)
 
 <p align="center">
-<img alt="child poverty distribution in Berlin" src="child_pov.svg"/>
+<img alt="child poverty distribution in Berlin" width="75%" src="child_pov.png"/>
 <p>
 <p align="center">
 <b>Fig. 1 Distribution of child poverty in Berlin (natural breaks)</b>
@@ -24,7 +24,7 @@ Our full dataset had 105 columns and 542 rows.
 We had to drop the 6 planning areas with the least residents because we did not have their child poverty rate and imputed other missing value with Sklearn KNN Imputer. 
 
 <p align="center">
-<img alt="Wordcloud" src="Worldcloud.png"/>
+<img alt="Wordcloud" width="75%" src="Worldcloud.png"/>
 <p>
 <p align="center">
 <b>Fig. 2 Wordcloud displaying Pearson correlation with child poverty</b>
@@ -36,10 +36,10 @@ We used K-means clustering to observe patterns in our data. We identified spatia
 We also observed a very clear infrastructural difference between center and periphery after using K-Means algorithm on 30 infrastrutural features. 
     
 <p align="center">
-<img alt="Wordcloud" src="cluster_infrastructure.svg"/>
+<img alt="cluster infrastructure" width="75%" src="cluster_infrastructure.png"/>
 <p>
-<p id= "ap1" align="center">
-    <b>Fig. 3 Clustering on <a href="#nt1"> 24 infrastructural features </a></b>
+<p align="center">
+    <b>Fig. 3 Clustering on 24 infrastructural features*</b>
 </p>
 
 ## Spatial regression
@@ -88,7 +88,7 @@ According to Lagrange multiplier tests for both error and lagged models were sig
 
 Have a look at a selection of our data and results on our <a href="https://appyouthinthecity.herokuapp.com/">web app<a>!
   
-    <p id="nt1"><a href="#ap1">Features included</a>: public transportation (all kinds), railway stations, resturants, sommunity services, health care / hospital / doctors, public services, places for extracurricular education, universities, urban furniture, parcs / playgrounds, water points, soial housing, public housing, share of buildings built until 1940, share of buildings built between 1941 and 1990, share of buildings built between 1991 and 2015, vegetation volume per sqm, Kindergartens, primary schools, Gymnasiums, other secundary schools, vocational schools, other types of schools, schools for children with special needs. <p/>
+<p><font size="-2">* Features included: public transportation (all kinds), railway stations, resturants, sommunity services, health care / hospital / doctors, public services, places for extracurricular education, universities, urban furniture, parcs / playgrounds, water points, soial housing, public housing, share of buildings built until 1940, share of buildings built between 1941 and 1990, share of buildings built between 1991 and 2015, vegetation volume per sqm, Kindergartens, primary schools, Gymnasiums, other secundary schools, vocational schools, other types of schools, schools for children with special needs. </font></p>
 
     
 This project was conducted by Maciej Szuba , Nichanok Auevechanichkul and Safia Ahmedou as part of a Data Science Bootcamp at Le Wagon (batch #874) in September 2022.
