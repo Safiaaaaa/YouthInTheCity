@@ -4,6 +4,16 @@ Poverty is not only a material matter; it affects children’s everyday life, th
 
 Is child poverty clustered in Berlin? If so, how and why? 
 
+A Moran's I test on child poverty in Berlin answered our first question: there is social segreation in Berlin and child poverty is clustered. Just looking at the spatial distribution makes this fact very clear (see Fig. 1 below)
+
+<p align="center">
+<img alt="child poverty distribution in Berlin" src="child_pov.svg"/>
+<p>
+<p align="center">
+<b>Fig. 1 Distribution of child poverty in Berlin (natural breaks)</b>
+</p>
+
+
 ## Data collection and processing
 
 We collected more than 100 geodata features from <a href="https://www.openstreetmap.org/#map=5/51.330/10.453">OpenStreetMap<a>  and <a href="https://daten.berlin.de/">Berlin Open Data platform<a>, including data on demographics, housing, urban planning and migration. 
@@ -14,13 +24,23 @@ Our full dataset had 105 columns and 542 rows.
 We had to drop the 6 planning areas with the least residents because we did not have their child poverty rate and imputed other missing value with Sklearn KNN Imputer. 
 
 <p align="center">
-[<img alt="Wordcloud" src="Worldcloud.png"/>](https://appyouthinthecity.herokuapp.com/)
+<img alt="Wordcloud" src="Worldcloud.png"/>
 <p>
-  
+<p align="center">
+<b>Fig. 2 Wordcloud displaying Pearson correlation with child poverty</b>
+</p>
+    
 ## Clustering 
 
-We used K-means clustering to observe patterns in our data. We identified spatial patterns with regards to social data: there are clear (very) high child poverty clusters (see map below), planning areas with higher or lower social index (an index built by unemployement rate, child poverty and share of beneficiaries of social welfare) are not randomly distributed throughout space. They tend to form regions. 
-We also observed a very clear infrastructural difference between center and periphery.
+We used K-means clustering to observe patterns in our data. We identified spatial patterns with regards to social data: planning areas with higher or lower social index (an index built by unemployement rate, child poverty and share of beneficiaries of social welfare) are not randomly distributed throughout space. They tend to form regions. 
+We also observed a very clear infrastructural difference between center and periphery after using K-Means algorithm on 30 infrastrutural features. 
+    
+<p align="center">
+<img alt="Wordcloud" src="cluster_infrastructure.svg"/>
+<p>
+<p id= "ap1" align="center">
+    <b>Fig. 3 Clustering on <a href="#nt1"> 24 infrastructural features </a></b>
+</p>
 
 ## Spatial regression
 
@@ -51,16 +71,11 @@ Error models did not perform much better than the OLS regression (Pseudo R2 of 0
 In lag model, spatial autocorrelation is considered as a feature: the y values of neighbours is added to the regression equation. 
 By far, lag models outperformed all other models. Adding regimes still imprive the performance of the model, which implies that there are still significant infrastructural differences between East and West Berlin. 
 
-<figure align="center">
-<img alt="model metrics" width="700px" src="metrics.png"/>
-<figcaption>Summuray of the models performances</figcaption>
-</figure>
-
 <p align="center">
 <img alt="model metrics" width="400px" src="metrics.png"/>
 </p>
 <p align="center">
-<b>Summuray of the models performances</b>
+<b>Fig. ??? Summary of the models performances</b>
 </p>
     
 Here is a comparison of the repartition and the value of our residuals between our baseline model and our best performing model. In red regions, the models underestimated child poverty. In blue regions, they overestimated it. 
@@ -73,5 +88,7 @@ According to Lagrange multiplier tests for both error and lagged models were sig
 
 Have a look at a selection of our data and results on our <a href="https://appyouthinthecity.herokuapp.com/">web app<a>!
   
+    <p id="nt1"><a href="#ap1">Features included</a>: public transportation (all kinds), railway stations, resturants, sommunity services, health care / hospital / doctors, public services, places for extracurricular education, universities, urban furniture, parcs / playgrounds, water points, soial housing, public housing, share of buildings built until 1940, share of buildings built between 1941 and 1990, share of buildings built between 1991 and 2015, vegetation volume per sqm, Kindergartens, primary schools, Gymnasiums, other secundary schools, vocational schools, other types of schools, schools for children with special needs. <p/>
 
+    
 This project was conducted by Maciej Szuba , Nichanok Auevechanichkul and Safia Ahmedou as part of a Data Science Bootcamp at Le Wagon (batch #874) in September 2022.
