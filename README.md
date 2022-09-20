@@ -75,7 +75,7 @@ By far, lag models outperformed all other models. Adding regimes still imprive t
 <img alt="model metrics" width="400px" src="metrics.png"/>
 </p>
 <p align="center">
-<b>Fig. ??? Summary of the models performances</b>
+<b>Fig. 4 Summary of the models performances</b>
 </p>
     
 Here is a comparison of the repartition and the value of our residuals between our baseline model and our best performing model. In red regions, the models underestimated child poverty. In blue regions, they overestimated it. 
@@ -83,8 +83,18 @@ Here is a comparison of the repartition and the value of our residuals between o
 <p align="center">
 <img alt="residuals comparison" src="residuals_regimes.gif"/>
 </p>
+<p align="center">
+<b>Fig. 5 Maps of the residuals of the OLS model and the ML Lag Model with an East West Regime </b>
+</p>
 
-According to Lagrange multiplier tests for both error and lagged models were significant, even in thei robust version. TBC... 
+Against the idea of infrastructural deserts, which are observed in other cities, e.g. in the US, we found that child poverty is not systematically correlated with a lack of cultural institutions, outdoor facilities or schools. Our model further identified two very significant features for child poverty: social housing and public housing. Here is an overview of the regression coefficients outputed by our model: 
+
+<p align="center">
+<img alt="regression z coefficients" src="z_stat.png"/>
+</p>
+<p align="center">
+<b>Fig. 5 Features significance of ML Lag Regimes model (z coefficients) </b>
+</p>
 
 Have a look at a selection of our data and results on our <a href="https://appyouthinthecity.herokuapp.com/">web app<a>!
   
