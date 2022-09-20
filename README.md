@@ -7,7 +7,7 @@ Is child poverty clustered in Berlin? If so, how and why?
 A Moran's I test on child poverty in Berlin answered our first question: there is social segreation in Berlin and child poverty is clustered. Just looking at the spatial distribution makes this fact very clear (see Fig. 1 below)
 
 <p align="center">
-<img alt="child poverty distribution in Berlin" src="child_pov.svg"/>
+<img alt="child poverty distribution in Berlin" width="75%" src="child_pov.png"/>
 <p>
 <p align="center">
 <b>Fig. 1 Distribution of child poverty in Berlin (natural breaks)</b>
@@ -24,7 +24,7 @@ Our full dataset had 105 columns and 542 rows.
 We had to drop the 6 planning areas with the least residents because we did not have their child poverty rate and imputed other missing value with Sklearn KNN Imputer. 
 
 <p align="center">
-<img alt="Wordcloud" src="Worldcloud.png"/>
+<img alt="Wordcloud" width="75%" src="Worldcloud.png"/>
 <p>
 <p align="center">
 <b>Fig. 2 Wordcloud displaying Pearson correlation with child poverty</b>
@@ -36,10 +36,10 @@ We used K-means clustering to observe patterns in our data. We identified spatia
 We also observed a very clear infrastructural difference between center and periphery after using K-Means algorithm on 30 infrastrutural features. 
     
 <p align="center">
-<img alt="Wordcloud" src="cluster_infrastructure.svg"/>
+<img alt="cluster infrastructure" width="75%" src="cluster_infrastructure.png"/>
 <p>
-<p id= "ap1" align="center">
-    <b>Fig. 3 Clustering on <a href="#nt1"> 24 infrastructural features </a></b>
+<p align="center">
+    <b>Fig. 3 Clustering on 24 infrastructural features*</b>
 </p>
 
 ## Spatial regression
@@ -75,7 +75,7 @@ By far, lag models outperformed all other models. Adding regimes still imprive t
 <img alt="model metrics" width="400px" src="metrics.png"/>
 </p>
 <p align="center">
-<b>Fig. ??? Summary of the models performances</b>
+<b>Fig. 4 Summary of the models performances</b>
 </p>
     
 Here is a comparison of the repartition and the value of our residuals between our baseline model and our best performing model. In red regions, the models underestimated child poverty. In blue regions, they overestimated it. 
@@ -83,12 +83,24 @@ Here is a comparison of the repartition and the value of our residuals between o
 <p align="center">
 <img alt="residuals comparison" src="residuals_regimes.gif"/>
 </p>
+<p align="center">
+<b>Fig. 5 Maps of the residuals of the OLS model and the ML Lag Model with an East West Regime </b>
+</p>
 
-According to Lagrange multiplier tests for both error and lagged models were significant, even in thei robust version. TBC... 
+Against the idea of infrastructural deserts, which are observed in other cities, e.g. in the US, we found that child poverty is not systematically correlated with a lack of cultural institutions, outdoor facilities or schools. Our model further identified two very significant features for child poverty: social housing and public housing. Here is an overview of the regression coefficients outputed by our model: 
+
+<p align="center">
+<img alt="regression z coefficients" width="75%" src="z_stat.png"/>
+</p>
+<p align="center">
+<b>Fig. 5 Features significance of ML Lag Regimes model (z coefficients) </b>
+</p>
 
 Have a look at a selection of our data and results on our <a href="https://appyouthinthecity.herokuapp.com/">web app<a>!
-  
-    <p id="nt1"><a href="#ap1">Features included</a>: public transportation (all kinds), railway stations, resturants, sommunity services, health care / hospital / doctors, public services, places for extracurricular education, universities, urban furniture, parcs / playgrounds, water points, soial housing, public housing, share of buildings built until 1940, share of buildings built between 1941 and 1990, share of buildings built between 1991 and 2015, vegetation volume per sqm, Kindergartens, primary schools, Gymnasiums, other secundary schools, vocational schools, other types of schools, schools for children with special needs. <p/>
 
-    
 This project was conducted by Maciej Szuba , Nichanok Auevechanichkul and Safia Ahmedou as part of a Data Science Bootcamp at Le Wagon (batch #874) in September 2022.
+
+
+<sub> 
+* Features included: public transportation (all kinds), railway stations, resturants, sommunity services, health care / hospital / doctors, public services, places for extracurricular education, universities, urban furniture, parcs / playgrounds, water points, soial housing, public housing, share of buildings built until 1940, share of buildings built between 1941 and 1990, share of buildings built between 1991 and 2015, vegetation volume per sqm, Kindergartens, primary schools, Gymnasiums, other secundary schools, vocational schools, other types of schools, schools for children with special needs. </sub>
+    
