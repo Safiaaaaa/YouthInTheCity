@@ -13,9 +13,8 @@ Working with Geopandas and Pysal, we used spatial join and areal interpolation t
 Our full dataset had 105 columns and 542 rows. 
 We had to drop the 6 planning areas with the least residents because we did not have their child poverty rate and imputed other missing value with Sklearn KNN Imputer. 
 
-<p align="center">
 [<img alt="Wordcloud" src="Worldcloud.png"/>](https://appyouthinthecity.herokuapp.com/)
-</p>
+
   
 ## Clustering 
 
