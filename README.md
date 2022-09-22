@@ -1,10 +1,10 @@
 # Analizing child poverty in Berlin
 
-Poverty is not only a material matter; it affects children’s everyday life, their social network, their educational chances, even their health. Associated with social segregation, which prevents children to be in touch with other milieus, it can become a hardly escapable trap. 
+Poverty is not only a material matter; it affects children’s everyday life, their social network, their educational chances, even their health. Together with social segregation, which limits childrens' connection with other milieus, it can become a trap that is extremely hard to free yourself from. 
 
 Is child poverty clustered in Berlin? If so, how and why? 
 
-A Moran's I test on child poverty in Berlin answered our first question: there is social segreation in Berlin and child poverty is clustered. Just looking at the spatial distribution makes this fact very clear (see Fig. 1 below)
+Just looking at the spatial distribution (see Fig. 1 below) makes us think we're on a the right track. Fourtunately, we can verify our intuitions with specialized geo-spatial examination, among them Moran's I test being the most fundamental one. They confirm our hypothesis - there is social segreation in Berlin and child poverty is clustered.
 
 <p align="center">
 <img alt="child poverty distribution in Berlin" width="75%" src="child_pov.png"/>
@@ -18,7 +18,7 @@ A Moran's I test on child poverty in Berlin answered our first question: there i
 
 We collected more than 100 geodata features from <a href="https://www.openstreetmap.org/#map=5/51.330/10.453">OpenStreetMap<a>  and <a href="https://daten.berlin.de/">Berlin Open Data platform<a>, including data on demographics, housing, urban planning and migration. 
 
-Working with Geopandas and Pysal, we used spatial join and areal interpolation to aggregate our features to the level of the 542 Berliner planning areas, the smallest statistical areas on which social data is publicly available. Spatial vector data can have the form of a polygon, a line or a point. We transformed points data into polygons by applying a 500m buffer to it. This way, we made sure that the borders of the planning areas were smoother - having features situated close to another planning area impact it as well.
+Working with <a href="https://geopandas.org/en/stable/">GeoPandas<a> and <a href="https://pysal.org/">Pysal<a>, we used spatial join and areal interpolation to aggregate our features to the level of the 542 Berliner Plannungsräume (planning areas), the smallest statistical areas on which social data is publicly available. Spatial vector data can have the form of a polygon, a line or a point. We transformed points data into polygons by applying a 500m buffer to them. This way, we made sure that the borders of the planning areas were smoother - having features situated close to another planning area impact it as well.
 
 Our full dataset had 105 columns and 542 rows. 
 We had to drop the 6 planning areas with the least residents because we did not have their child poverty rate and imputed other missing value with Sklearn KNN Imputer. 
@@ -32,7 +32,7 @@ We had to drop the 6 planning areas with the least residents because we did not 
     
 ## Clustering 
 
-We used K-means clustering to observe patterns in our data. We identified spatial patterns with regards to social data: planning areas with higher or lower social index (an index built by unemployement rate, child poverty and share of beneficiaries of social welfare) are not randomly distributed throughout space. They tend to form regions. 
+We used K-means clustering to observe patterns in our data. We identified spatial patterns with regards to social data: planning areas with higher or lower Social Index (an index built by unemployement rate, child poverty and share of beneficiaries of social welfare) are not randomly distributed throughout space. They tend to form regions. 
 We also observed a very clear infrastructural difference between center and periphery after using K-Means algorithm on 30 infrastrutural features. 
     
 <p align="center">
@@ -47,10 +47,10 @@ We also observed a very clear infrastructural difference between center and peri
 We decided to focus on the correlation between infrastructure and child poverty. In what context do children leave in poverty? Does child poverty correlate with infrastructural deficit? To answer these questions, we turned to regressions. 
 
 - Target (dependent variable): Child poverty
-- Features (independent / explanatory features): a selection of 10 infrastructural features (cultural institutions, schools and kindergartens, social housing, public housing, outdoor furnitures, parks and playgrounds, train stations, places for extracurricular education). 
+- Features (independent / explanatory features): a selection of 10 infrastructural features (cultural institutions, schools and kindergartens, social housing, public housing, outdoor recreation facilities, parks and playgrounds, train stations, places for extracurricular education). 
 
 * **Baseline: OLS Regression**
-    - Our baseline model was a regular OLS regression (we used Pysal spreg OLS model)
+    - Our baseline model was a regular OLS regression (we used <a href = "https://pysal.org/spreg/generated/spreg.OLS.html"> Pysal spreg OLS model<a>)
     - With an R2 from 0.36, it gave us fairly good results: we were able to explain 36% of the variablity of child poverty based on our selection of 10 infrastructural features
     - However, white test for heteroskedasticity was very significant, meaning our residuals where not randomly distributed, which violates a central assumption of an OLS regression and meant the calculated coefficients could not trusted. 
     - Moran's I test on the regression's residuals was also significant, which meant residuals were spatially autocorrelated.
@@ -64,14 +64,14 @@ We decided to focus on the correlation between infrastructure and child poverty.
 We conducted both error and lag models, with and without regimes. Considering some planning areas are very small and might be impacted by infrastructures of planning areas which don't share a border, we used inverse distance weights.
 
 * **Error models**
-    - In error models, spatial autocorrelation is considered as noise and added to the error term of the regression equation. 
+    - In <a href = "https://pysal.org/spreg/generated/spreg.ML_Error.html#spreg.ML_Error"> error models<a>, spatial autocorrelation is considered as noise and added to the error term of the regression equation. 
     - Theoretically, this would imply that neighbouring observations are similar because they share the same characterics, and not because they influence each other. 
     - Error models did not perform much better than the OLS regression (Pseudo R2 of 0.38). 
     
 * **Lag models**
-    - In lag models, spatial autocorrelation is considered as a feature: the y values of neighbours is added to the regression equation. 
+    - In <a href = "https://pysal.org/spreg/generated/spreg.ML_Lag.html#spreg.ML_Lag"> lag models<a>, spatial autocorrelation is considered as a feature: the y values of neighbours is added to the regression equation. 
     - They theoretically imply that neighbouring observations are influencing each other.
-    - By far, lag models outperformed all other models, which is inline with the fact that the social context is the biggest factor for child poverty. 
+    - By far, lag models outperformed all other models, which is in line with the fact that the social context is the biggest factor for child poverty. 
     - Adding regimes improved the performance of the model, which confirms that there are still significant infrastructural differences between East and West Berlin. 
 
 <p align="center">
@@ -101,7 +101,7 @@ Against the idea of infrastructural deserts, which are observed in other cities,
 
 Have a look at a selection of our data and results on our <a href="https://appyouthinthecity.herokuapp.com/">web app<a>!
 
-This project was conducted by Maciej Szuba , Nichanok Auevechanichkul and Safia Ahmedou as part of a Data Science Bootcamp at Le Wagon (batch #874) in September 2022.
+This project was conducted by Maciej Szuba, Nichanok Auevechanichkul and Safia Ahmedou as part of a Data Science Bootcamp at Le Wagon (batch #874) in September 2022.
 
 
 <sub> 
