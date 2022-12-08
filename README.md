@@ -99,8 +99,6 @@ Against the idea of infrastructural deserts, which are observed in other cities,
 <b>Fig. 5 Features significance of ML Lag Regimes model (z coefficients) </b>
 </p>
 
-Have a look at a selection of our data and results on our <a href="https://appyouthinthecity.herokuapp.com/">web app<a>!
-
 This project was conducted by Maciej Szuba, Nichanok Auevechanichkul and Safia Ahmedou as part of a Data Science Bootcamp at Le Wagon (batch #874) in September 2022.
 
 
