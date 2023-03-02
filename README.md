@@ -4,7 +4,7 @@ Poverty is not only a material matter; it affects children’s everyday life, th
 
 Is child poverty clustered in Berlin? If so, how and why? 
 
-Just looking at the spatial distribution (see Fig. 1 below) could answer our first question. Fortunately, we can verify this intuition with geostatistical tests, Moran's I test being the most fundamental one. They confirm our hypothesis: there is social segreation in Berlin and child poverty is clustered.
+We used the rate of children from households receiving social welfare as a proxy for child poverty. Just looking at the spatial distribution (see Fig. 1 below) could answer our first question. Fortunately, we can verify this intuition with geostatistical tests, Moran's I test being the most fundamental one. They confirm our hypothesis: there is social segreation in Berlin and child poverty is clustered.
 
 <p align="center">
 <img alt="child poverty distribution in Berlin" width="75%" src="child_pov.png"/>
