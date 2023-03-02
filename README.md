@@ -10,7 +10,7 @@ Just looking at the spatial distribution (see Fig. 1 below) could answer our fir
 <img alt="child poverty distribution in Berlin" width="75%" src="child_pov.png"/>
 <p>
 <p align="center">
-<b>Fig. 1 Distribution of child poverty in Berlin (natural breaks)</b>
+<b>Fig. 1 Percentage of child poverty in Berlin (natural breaks)</b>
 </p>
 
 
