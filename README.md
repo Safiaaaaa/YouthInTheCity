@@ -1,10 +1,10 @@
 # Analizing child poverty in Berlin
 
-Poverty is not only a material matter; it affects children’s everyday life, their social network, their educational chances, even their health. Together with social segregation, which limits childrens' connection with other milieus, it can become a trap that is extremely hard to free yourself from. 
+Poverty is not only a material matter; it affects children’s everyday life, their social network, their educational chances, even their health. Together with social segregation, which limits childrens' exposure to other milieus, it can become a trap that is extremely hard to escape. 
 
 Is child poverty clustered in Berlin? If so, how and why? 
 
-Just looking at the spatial distribution (see Fig. 1 below) makes us think we're on a the right track. Fourtunately, we can verify our intuitions with specialized geo-spatial examination, among them Moran's I test being the most fundamental one. They confirm our hypothesis - there is social segreation in Berlin and child poverty is clustered.
+Just looking at the spatial distribution (see Fig. 1 below) could answer our first question. Fortunately, we can verify this intuition with geostatistical tests, Moran's I test being the most fundamental one. They confirm our hypothesis: there is social segreation in Berlin and child poverty is clustered.
 
 <p align="center">
 <img alt="child poverty distribution in Berlin" width="75%" src="child_pov.png"/>
